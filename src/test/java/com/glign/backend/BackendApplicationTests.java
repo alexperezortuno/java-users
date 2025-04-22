@@ -1,10 +1,10 @@
-package com.glign.user;
+package com.glign.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class UserApplicationTests {
+class BackendApplicationTests {
 
 	@Test
 	void contextLoads() {
