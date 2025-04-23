@@ -3,9 +3,11 @@ package com.glign.backend.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
-public class ErrorResponse {
+public class ErrorResponse implements Serializable {
     private String message;
     private int statusCode;
 

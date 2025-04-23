@@ -4,9 +4,11 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
-public class PhoneDto {
+public class PhoneReqDto implements Serializable {
     @NotBlank(message = "number is required")
     private String number;
 

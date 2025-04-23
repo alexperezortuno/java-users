@@ -22,13 +22,18 @@ public interface UserMapper {
 
     UserFullResDto entityToDto(User user);
 
-    List<Phone> toPhoneEntityList(List<PhoneDto> list);
-    List<PhoneDto> toPhoneDtoList(List<Phone> list);
+    List<Phone> toPhoneEntityList(List<PhoneReqDto> list);
+    List<PhoneReqDto> toPhoneDtoList(List<Phone> list);
 
     @Mapping(target = "id", source = "uuid")
     @Mapping(target = "created", expression = "java(user.getCreatedDate())")
     @Mapping(target = "lastModified", source = "lastModifiedDate")
     UserFullResDto reduceEntityToDto(User user);
+
+    @Mapping(target = "id", source = "uuid")
+    @Mapping(target = "created", expression = "java(user.getCreatedDate())")
+    @Mapping(target = "lastModified", source = "lastModifiedDate")
+    UserCreateResDto reduceForCreateUderDto(User user);
 
     @Mapping(target = "id", source = "uuid")
     @Mapping(target = "lastModified", source = "lastModifiedDate")

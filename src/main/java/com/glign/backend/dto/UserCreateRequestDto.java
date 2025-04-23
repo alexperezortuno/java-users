@@ -7,11 +7,12 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Getter
 @Setter
-public class UserCreateRequestDto {
+public class UserCreateRequestDto implements Serializable {
     @NotBlank(message = "name is required")
     private String name;
 
@@ -24,5 +25,5 @@ public class UserCreateRequestDto {
     private String password;
 
     @Valid
-    private List<PhoneDto> phones;
+    private List<PhoneReqDto> phones;
 }

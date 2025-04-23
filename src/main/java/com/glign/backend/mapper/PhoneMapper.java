@@ -1,6 +1,6 @@
 package com.glign.backend.mapper;
 
-import com.glign.backend.dto.PhoneDto;
+import com.glign.backend.dto.PhoneReqDto;
 import com.glign.backend.jpa.entity.Phone;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,10 +13,10 @@ public interface PhoneMapper {
     PhoneMapper INSTANCE = Mappers.getMapper(PhoneMapper.class);
 
     @Mapping(target = "id", ignore = true)
-    Phone dtoToEntity(PhoneDto dto);
+    Phone dtoToEntity(PhoneReqDto dto);
 
-    PhoneDto entityToDto(Phone entity);
+    PhoneReqDto entityToDto(Phone entity);
 
-    List<Phone> dtoToEntity(List<PhoneDto> list);
-    List<PhoneDto> entityToDto(List<Phone> list);
+    List<Phone> dtoToEntity(List<PhoneReqDto> list);
+    List<PhoneReqDto> entityToDto(List<Phone> list);
 }

@@ -1,5 +1,6 @@
 package com.glign.backend.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,9 +8,8 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class UserUpdateResDto {
-    private String id;
+public class UserUpdateResDto extends UserFullResDto {
     private String name;
-    private boolean active;
-    private Date lastModified;
+    @JsonIgnore
+    private Date created;
 }

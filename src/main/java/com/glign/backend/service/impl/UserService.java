@@ -67,7 +67,7 @@ public class UserService implements IUserService {
             user.setToken(token);
 
             User savedUser = userRepository.save(user);
-            var response = UserMapper.INSTANCE.reduceEntityToDto(savedUser);
+            var response = UserMapper.INSTANCE.reduceForCreateUderDto(savedUser);
             return new ResponseMessage<>(response, HttpStatus.CREATED);
         } catch (Exception e) {
             log.error("Error creating user: {}", e.getMessage());
