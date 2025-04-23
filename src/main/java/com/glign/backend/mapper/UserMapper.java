@@ -1,9 +1,6 @@
 package com.glign.backend.mapper;
 
-import com.glign.backend.dto.PhoneDto;
-import com.glign.backend.dto.UserDto;
-import com.glign.backend.dto.UserCreateRequestDto;
-import com.glign.backend.dto.UserResponseDto;
+import com.glign.backend.dto.*;
 import com.glign.backend.jpa.entity.Phone;
 import com.glign.backend.jpa.entity.User;
 import org.mapstruct.Mapper;
@@ -32,4 +29,8 @@ public interface UserMapper {
     @Mapping(target = "created", expression = "java(user.getCreatedDate())")
     @Mapping(target = "lastModified", source = "lastModifiedDate")
     UserResponseDto reduceEntityToDto(User user);
+
+    @Mapping(target = "id", source = "uuid")
+    @Mapping(target = "lastModified", source = "lastModifiedDate")
+    UserUpdateResponseDto reduceEntityToUpdateDto(User user);
 }
