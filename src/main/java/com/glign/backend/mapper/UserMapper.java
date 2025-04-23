@@ -18,9 +18,9 @@ public interface UserMapper {
     User dtoToEntity(UserCreateRequestDto userCreateRequestDto);
 
     @Mapping(target = "id", ignore = true)
-    User dtoToEntity(UserDto user);
+    User dtoToEntity(UserFullResDto user);
 
-    UserDto entityToDto(User user);
+    UserFullResDto entityToDto(User user);
 
     List<Phone> toPhoneEntityList(List<PhoneDto> list);
     List<PhoneDto> toPhoneDtoList(List<Phone> list);
@@ -28,7 +28,7 @@ public interface UserMapper {
     @Mapping(target = "id", source = "uuid")
     @Mapping(target = "created", expression = "java(user.getCreatedDate())")
     @Mapping(target = "lastModified", source = "lastModifiedDate")
-    UserResDto reduceEntityToDto(User user);
+    UserFullResDto reduceEntityToDto(User user);
 
     @Mapping(target = "id", source = "uuid")
     @Mapping(target = "lastModified", source = "lastModifiedDate")

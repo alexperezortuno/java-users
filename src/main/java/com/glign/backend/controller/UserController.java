@@ -25,10 +25,10 @@ public class UserController {
      * Create a new user
      *
      * @param request UserCreateRequestDto
-     * @return ResponseEntity<UserResDto>
+     * @return ResponseEntity<UserFullResDto>
      */
     @PostMapping("")
-    public ResponseEntity<?> createUser(@Valid @RequestBody UserCreateRequestDto request) throws ApiException {
+    public ResponseEntity<?> getUser(@Valid @RequestBody UserCreateRequestDto request) throws ApiException {
         var responseMessage = userService.createUser(request);
         return UserHttpResponseBuilder.buildResponse(responseMessage);
     }
@@ -37,7 +37,7 @@ public class UserController {
      * Get user by UUID
      *
      * @param id User id
-     * @return ResponseEntity<UserResDto>
+     * @return ResponseEntity<UserFullResDto>
      */
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable String id) throws ApiException {
@@ -49,7 +49,7 @@ public class UserController {
      * Remove a user by UUID
      *
      * @param id User id
-     * @return ResponseEntity<UserResDto>
+     * @return ResponseEntity<UserFullResDto>
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<?> removeUserById(@PathVariable String id) throws ApiException {
@@ -61,7 +61,7 @@ public class UserController {
      * Update a user partially
      *
      * @param request UserCreateRequestDto
-     * @return ResponseEntity<UserResDto>
+     * @return ResponseEntity<UserFullResDto>
      */
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateUser(@PathVariable String id, @Valid @RequestBody UserUpdateReqDto request) throws ApiException {

@@ -41,7 +41,7 @@ public class UserService implements IUserService {
     private String emailRegex;
 
     @Override
-    public ResponseMessage<UserResDto> createUser(UserCreateRequestDto userCreateRequestDto) throws ApiException {
+    public ResponseMessage<UserFullResDto> createUser(UserCreateRequestDto userCreateRequestDto) throws ApiException {
         if (userRepository.existsByEmail(userCreateRequestDto.getEmail())) {
             throw new ApiException(ResponseCode.EMAIL_EXIST.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -76,7 +76,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public ResponseMessage<UserResDto> getUserById(String id) throws ApiException {
+    public ResponseMessage<UserFullResDto> getUserById(String id) throws ApiException {
         try {
             var user = userRepository.findByUuid(UUID.fromString(id));
             if (user == null) {
