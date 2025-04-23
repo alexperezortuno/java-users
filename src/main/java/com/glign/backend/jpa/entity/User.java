@@ -32,9 +32,10 @@ public class User extends BaseEntity<User> {
     private String password;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "usuario_id")
+    @JoinColumn(name = "user_id")
     private List<Phone> phones;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "last_login")
     private Date lastLogin;
 

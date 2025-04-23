@@ -28,7 +28,7 @@ spring:
       pool-name: ${DB_POOL_NAME:UserDBPool}
   h2:
     console:
-      enabled: true
+      enabled: ${H2_CONSOLE_ENABLED:false} # true to enable H2 console
       path: /h2-console
   jpa:
     database-platform: ${DB_DIALECT:org.hibernate.dialect.H2Dialect} # org.hibernate.dialect.PostgreSQLDialect

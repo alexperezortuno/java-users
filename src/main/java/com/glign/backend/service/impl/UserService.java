@@ -1,6 +1,7 @@
 package com.glign.backend.service.impl;
 
 import com.glign.backend.dto.UserRequestDto;
+import com.glign.backend.dto.UserResponseDto;
 import com.glign.backend.exception.ApiException;
 import com.glign.backend.jpa.entity.User;
 import com.glign.backend.mapper.UserMapper;
@@ -38,7 +39,7 @@ public class UserService implements IUserService {
     private String emailRegex;
 
     @Override
-    public ResponseMessage createUser(UserRequestDto userRequestDto) throws ApiException {
+    public ResponseMessage<UserResponseDto> createUser(UserRequestDto userRequestDto) throws ApiException {
         if (userRepository.existsByEmail(userRequestDto.getEmail())) {
             throw new ApiException(ResponseCode.EMAIL_EXIST.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -61,7 +62,7 @@ public class UserService implements IUserService {
 
             User savedUser = userRepository.save(user);
             var response = UserMapper.INSTANCE.reduceEntityToDto(savedUser);
-            return new ResponseMessage(response, HttpStatus.CREATED);
+            return new ResponseMessage<>(response, HttpStatus.CREATED);
         } catch (Exception e) {
             log.error("Error creating user: {}", e.getMessage());
             throw new ApiException(ResponseCode.INTERNAL_SERVER_ERROR.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

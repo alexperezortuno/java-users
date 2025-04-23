@@ -18,9 +18,9 @@ public interface UserMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "uuid", expression = "java(java.util.UUID.randomUUID())")
-    @Mapping(target = "createdDate", expression = "java(new java.util.Date())")
     User dtoToEntity(UserRequestDto userRequestDto);
 
+    @Mapping(target = "id", ignore = true)
     User dtoToEntity(UserDto user);
 
     UserDto entityToDto(User user);
@@ -29,7 +29,7 @@ public interface UserMapper {
     List<PhoneDto> toPhoneDtoList(List<Phone> list);
 
     @Mapping(target = "id", source = "uuid")
-    @Mapping(target = "created", source = "createdDate")
+    @Mapping(target = "created", expression = "java(user.getCreatedDate())")
     @Mapping(target = "lastModified", source = "lastModifiedDate")
     UserResponseDto reduceEntityToDto(User user);
 }
