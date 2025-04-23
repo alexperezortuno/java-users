@@ -56,3 +56,10 @@ jwt:
 # Password regex
 password:
   regex: "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$"
+
+userApi:
+  openapi:
+    dev-url: http://localhost:${SERVER_PORT:8080}
+    prod-url: ${PROD_DOMAIN:https://user-api.com}:${PROD_PORT:8080}
+    name: "User API"
+    email: "test@local.com"
