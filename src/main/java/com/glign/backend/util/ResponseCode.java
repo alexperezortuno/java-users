@@ -1,6 +1,5 @@
 package com.glign.backend.util;
 
-import ch.qos.logback.classic.spi.ILoggingEvent;
 import lombok.Getter;
 
 @Getter
@@ -15,7 +14,8 @@ public enum ResponseCode {
     INVALID_TOKEN(-7, "invalid token"),
     USER_NOT_FOUND(-8, "user not found"),
     PHONE_REQUIRED(-9, "phone required"),
-    PHONE_UPDATED(-10, "phone updated"),;
+    PHONE_UPDATED(-10, "phone updated"),
+    PHONE_ADDED(-11, "phone added");
 
     private final int code;
     private final String message;
