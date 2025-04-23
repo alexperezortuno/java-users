@@ -23,8 +23,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        //.requestMatchers(HttpMethod.GET, "/user/**").authenticated() // Protege solo los GET en /user/**
-                        //.requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/user/**").authenticated() // Protege solo los GET en /user/**
+                        .requestMatchers(HttpMethod.PATCH, "/user/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/user/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/user/**").authenticated()
+                        .requestMatchers("/h2-console/**").permitAll()
                         .anyRequest().permitAll()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
