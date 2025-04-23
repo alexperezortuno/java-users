@@ -91,14 +91,14 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public ResponseMessage<SimpleResponse> removeUserById(String id) throws ApiException {
+    public ResponseMessage<MessageResponse> removeUserById(String id) throws ApiException {
         try {
             var user = userRepository.findByUuid(UUID.fromString(id));
             if (user == null) {
                 throw new ApiException(ResponseCode.USER_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
             }
             userRepository.delete(user);
-            return new ResponseMessage<>(new SimpleResponse(ResponseCode.USER_DELETED.getMessage()), HttpStatus.OK);
+            return new ResponseMessage<>(new MessageResponse(ResponseCode.USER_DELETED.getMessage()), HttpStatus.OK);
         } catch (Exception e) {
             log.error("error deleting user: {}", e.getMessage());
             throw new ApiException(ResponseCode.INTERNAL_SERVER_ERROR.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

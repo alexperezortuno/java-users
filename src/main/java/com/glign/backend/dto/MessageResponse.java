@@ -7,10 +7,10 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-public class SimpleResponse implements Serializable {
+public class MessageResponse implements Serializable {
     private String message;
 
-    public SimpleResponse(String message) {
+    public MessageResponse(String message) {
         this.message = message;
     }
 }

@@ -8,6 +8,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class PhoneFullDto implements Serializable {
+    private Long id;
     private String number;
     private String cityCode;
     private String countryCode;

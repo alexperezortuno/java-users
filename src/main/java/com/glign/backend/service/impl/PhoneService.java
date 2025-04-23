@@ -2,7 +2,7 @@ package com.glign.backend.service.impl;
 
 import com.glign.backend.dto.PhoneReqDto;
 import com.glign.backend.dto.PhoneUpdateRequestDto;
-import com.glign.backend.dto.SimpleResponse;
+import com.glign.backend.dto.MessageResponse;
 import com.glign.backend.exception.ApiException;
 import com.glign.backend.jpa.entity.Phone;
 import com.glign.backend.mapper.PhoneMapper;
@@ -56,7 +56,7 @@ public class PhoneService implements IPhoneService {
             user.getPhones().clear();
             user.getPhones().addAll(phones);
             userRepository.save(user);
-            return new ResponseMessage<>(new SimpleResponse(ResponseCode.PHONE_UPDATED.getMessage()), HttpStatus.OK);
+            return new ResponseMessage<>(new MessageResponse(ResponseCode.PHONE_UPDATED.getMessage()), HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error updating phones: {}", e.getMessage());
             throw new ApiException(ResponseCode.INTERNAL_SERVER_ERROR.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -86,7 +86,7 @@ public class PhoneService implements IPhoneService {
             var phones = PhoneMapper.INSTANCE.dtoToEntity(request);
             phones.setUser(user);
             phoneRepository.save(phones);
-            return new ResponseMessage<>(new SimpleResponse(ResponseCode.PHONE_ADDED.getMessage()), HttpStatus.OK);
+            return new ResponseMessage<>(new MessageResponse(ResponseCode.PHONE_ADDED.getMessage()), HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error adding phones: {}", e.getMessage());
             throw new ApiException(ResponseCode.INTERNAL_SERVER_ERROR.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

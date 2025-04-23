@@ -44,4 +44,16 @@ public class PhoneController {
         var responseMessage = phoneService.addPhones(id, request);
         return UserHttpResponseBuilder.buildResponse(responseMessage);
     }
+
+    /**
+     * Delete phones of a user
+     *
+     * @param id User id
+     * @return ResponseEntity>
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletePhones(@PathVariable String id) throws ApiException {
+        var responseMessage = phoneService.deletePhones(id);
+        return UserHttpResponseBuilder.buildResponse(responseMessage);
+    }
 }
