@@ -10,4 +10,8 @@ import java.util.List;
 @Setter
 public class PhoneUpdateRequestDto implements Serializable {
     private List<PhoneReqDto> phones;
+
+    public PhoneUpdateRequestDto(List<PhoneReqDto> phones) {
+        this.phones = phones;
+    }
 }
