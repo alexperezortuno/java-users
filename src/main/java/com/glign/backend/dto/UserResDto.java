@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class UserResponseDto {
+public class UserResDto {
     private String id;
     private String token;
     private boolean active;

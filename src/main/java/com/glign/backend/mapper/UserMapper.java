@@ -28,9 +28,9 @@ public interface UserMapper {
     @Mapping(target = "id", source = "uuid")
     @Mapping(target = "created", expression = "java(user.getCreatedDate())")
     @Mapping(target = "lastModified", source = "lastModifiedDate")
-    UserResponseDto reduceEntityToDto(User user);
+    UserResDto reduceEntityToDto(User user);
 
     @Mapping(target = "id", source = "uuid")
     @Mapping(target = "lastModified", source = "lastModifiedDate")
-    UserUpdateResponseDto reduceEntityToUpdateDto(User user);
+    UserUpdateResDto reduceEntityToUpdateDto(User user);
 }

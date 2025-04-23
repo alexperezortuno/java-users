@@ -1,11 +1,7 @@
 package com.glign.backend.service.impl;
 
-import com.glign.backend.dto.UserResponseDto;
-import com.glign.backend.dto.UserCreateRequestDto;
-import com.glign.backend.dto.UserUpdateRequestDto;
-import com.glign.backend.dto.UserUpdateResponseDto;
-import com.glign.backend.dto.PhoneUpdateRequestDto;
-import com.glign.backend.dto.SimpleResponse;
+import com.glign.backend.dto.*;
+import com.glign.backend.dto.UserUpdateResDto;
 import com.glign.backend.exception.ApiException;
 import com.glign.backend.jpa.entity.User;
 import com.glign.backend.mapper.UserMapper;
@@ -45,7 +41,7 @@ public class UserService implements IUserService {
     private String emailRegex;
 
     @Override
-    public ResponseMessage<UserResponseDto> createUser(UserCreateRequestDto userCreateRequestDto) throws ApiException {
+    public ResponseMessage<UserResDto> createUser(UserCreateRequestDto userCreateRequestDto) throws ApiException {
         if (userRepository.existsByEmail(userCreateRequestDto.getEmail())) {
             throw new ApiException(ResponseCode.EMAIL_EXIST.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -80,7 +76,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public ResponseMessage<UserResponseDto> getUserById(String id) throws ApiException {
+    public ResponseMessage<UserResDto> getUserById(String id) throws ApiException {
         try {
             var user = userRepository.findByUuid(UUID.fromString(id));
             if (user == null) {
@@ -110,7 +106,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public ResponseMessage<UserUpdateResponseDto> updateUser(String id, UserUpdateRequestDto userCreateRequestDto) throws ApiException {
+    public ResponseMessage<UserUpdateResDto> updateUser(String id, UserUpdateReqDto userCreateRequestDto) throws ApiException {
         try {
             var user = userRepository.findByUuid(UUID.fromString(id));
             if (user == null) {
