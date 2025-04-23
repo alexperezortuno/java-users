@@ -1,5 +1,6 @@
 package com.glign.backend.controller;
 
+import com.glign.backend.dto.PhoneUpdateRequestDto;
 import com.glign.backend.dto.UserCreateRequestDto;
 import com.glign.backend.dto.UserUpdateRequestDto;
 import com.glign.backend.exception.ApiException;
@@ -56,14 +57,24 @@ public class UserController {
     }
 
     /**
-     * Update a user
+     * Update a user partially
      *
      * @param request UserCreateRequestDto
      * @return ResponseEntity<UserResponseDto>
      */
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<?> updateUser(@PathVariable String id, @RequestBody UserUpdateRequestDto request) throws ApiException {
         var responseMessage = userService.updateUser(id, request);
+        return UserHttpResponseBuilder.buildResponse(responseMessage);
+    }
+
+    /**
+     * Update phones of a user
+     *
+     */
+    @PatchMapping("/{id}/phones")
+    public ResponseEntity<?> updatePhones(@PathVariable String id, @RequestBody PhoneUpdateRequestDto request) throws ApiException {
+        var responseMessage = userService.updatePhones(id, request);
         return UserHttpResponseBuilder.buildResponse(responseMessage);
     }
 }

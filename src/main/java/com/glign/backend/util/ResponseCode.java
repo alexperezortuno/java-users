@@ -14,7 +14,8 @@ public enum ResponseCode {
     AUTHENTICATION_FAILED(-6, "authentication failed"),
     INVALID_TOKEN(-7, "invalid token"),
     USER_NOT_FOUND(-8, "user not found"),
-    PHONE_REQUIRED(-9, "phone required");
+    PHONE_REQUIRED(-9, "phone required"),
+    PHONE_UPDATED(-10, "phone updated"),;
 
     private final int code;
     private final String message;

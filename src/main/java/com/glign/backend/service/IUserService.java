@@ -9,4 +9,5 @@ public interface IUserService {
     ResponseMessage<UserResponseDto> getUserById(String id) throws ApiException;
     ResponseMessage<SimpleResponse> removeUserById(String id) throws ApiException;
     ResponseMessage<UserUpdateResponseDto> updateUser(String id, UserUpdateRequestDto userCreateRequestDto) throws ApiException;
+    ResponseMessage<?> updatePhones(String id, PhoneUpdateRequestDto request) throws ApiException;
 }
