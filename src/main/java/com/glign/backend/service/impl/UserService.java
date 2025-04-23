@@ -126,11 +126,16 @@ public class UserService implements IUserService {
     @Override
     public ResponseMessage<?> updatePhones(String id, PhoneUpdateRequestDto request) throws ApiException {
         try {
+            if (request.getPhones() == null || request.getPhones().isEmpty()) {
+                throw new ApiException(ResponseCode.PHONE_REQUIRED.getMessage(), HttpStatus.BAD_REQUEST);
+            }
+
             var user = userRepository.findByUuid(UUID.fromString(id));
             if (user == null) {
                 throw new ApiException(ResponseCode.USER_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
             }
-            user.setPhones(UserMapper.INSTANCE.toPhoneEntityList(request.getPhones()));
+            user.getPhones().clear();
+            user.getPhones().addAll(UserMapper.INSTANCE.toPhoneEntityList(request.getPhones()));
             userRepository.save(user);
             return new ResponseMessage<>(new SimpleResponse(ResponseCode.PHONE_UPDATED.getMessage()), HttpStatus.OK);
         } catch (Exception e) {

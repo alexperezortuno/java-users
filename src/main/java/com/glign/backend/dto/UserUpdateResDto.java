@@ -22,5 +22,5 @@ public class UserUpdateResDto extends UserFullResDto {
     @JsonIgnore
     private Date created;
     @JsonIgnore
-    private List<PhoneFullDto> phones;
+    private List<PhoneReqDto> phones;
 }
