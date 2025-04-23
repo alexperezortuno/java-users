@@ -1,9 +1,9 @@
 package com.glign.backend.service;
 
 import com.glign.backend.dto.UserRequestDto;
-import com.glign.backend.dto.UserResponseMessage;
 import com.glign.backend.exception.ApiException;
+import com.glign.backend.util.ResponseMessage;
 
 public interface IUserService {
-    UserResponseMessage createUser(UserRequestDto userRequestDto) throws ApiException;
+    ResponseMessage createUser(UserRequestDto userRequestDto) throws ApiException;
 }

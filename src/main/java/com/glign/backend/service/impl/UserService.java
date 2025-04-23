@@ -1,15 +1,14 @@
 package com.glign.backend.service.impl;
 
 import com.glign.backend.dto.UserRequestDto;
-import com.glign.backend.dto.UserResponseMessage;
 import com.glign.backend.exception.ApiException;
-import com.glign.backend.jpa.entity.Phone;
 import com.glign.backend.jpa.entity.User;
 import com.glign.backend.mapper.UserMapper;
 import com.glign.backend.provider.JwtTokenProvider;
 import com.glign.backend.repository.UserRepository;
 import com.glign.backend.service.IUserService;
 import com.glign.backend.util.ResponseCode;
+import com.glign.backend.util.ResponseMessage;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,7 +38,7 @@ public class UserService implements IUserService {
     private String emailRegex;
 
     @Override
-    public UserResponseMessage createUser(UserRequestDto userRequestDto) throws ApiException {
+    public ResponseMessage createUser(UserRequestDto userRequestDto) throws ApiException {
         if (userRepository.existsByEmail(userRequestDto.getEmail())) {
             throw new ApiException(ResponseCode.EMAIL_EXIST.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -61,8 +60,8 @@ public class UserService implements IUserService {
             user.setToken(token);
 
             User savedUser = userRepository.save(user);
-            var response = UserMapper.INSTANCE.entityToDto(savedUser);
-            return new UserResponseMessage(response, HttpStatus.CREATED);
+            var response = UserMapper.INSTANCE.reduceEntityToDto(savedUser);
+            return new ResponseMessage(response, HttpStatus.CREATED);
         } catch (Exception e) {
             log.error("Error creating user: {}", e.getMessage());
             throw new ApiException(ResponseCode.INTERNAL_SERVER_ERROR.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

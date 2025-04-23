@@ -3,6 +3,7 @@ package com.glign.backend.mapper;
 import com.glign.backend.dto.PhoneDto;
 import com.glign.backend.dto.UserDto;
 import com.glign.backend.dto.UserRequestDto;
+import com.glign.backend.dto.UserResponseDto;
 import com.glign.backend.jpa.entity.Phone;
 import com.glign.backend.jpa.entity.User;
 import org.mapstruct.Mapper;
@@ -26,4 +27,9 @@ public interface UserMapper {
 
     List<Phone> toPhoneEntityList(List<PhoneDto> list);
     List<PhoneDto> toPhoneDtoList(List<Phone> list);
+
+    @Mapping(target = "id", source = "uuid")
+    @Mapping(target = "created", source = "createdDate")
+    @Mapping(target = "lastModified", source = "lastModifiedDate")
+    UserResponseDto reduceEntityToDto(User user);
 }

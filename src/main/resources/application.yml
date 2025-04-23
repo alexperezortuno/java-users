@@ -44,12 +44,6 @@ spring:
       default_schema: ${DB_SCHEMA:ac}
       hbm2ddl:
         create_namespaces: ${DB_CREATE_NAMESPACES:false}
-  boot:
-    admin:
-      client:
-        url: ${BOOT_ADMIN_CLIENT_BASE_URL:http://localhost:9080} # URL to the Spring Boot Admin client
-        instance:
-          service-url: ${BOOT_ADMIN_INSTANCE_SERVICE_URL:http://localhost:8080/actuator} # URL to the Spring Boot Admin server
   devtools:
     livereload:
       enabled: ${DEVTOOLS_LIVERELOAD_ENABLED:false}
@@ -65,6 +59,8 @@ regexes:
   email: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
 
 userApi:
+  application:
+    user: ${APP_USER:system}
   openapi:
     dev-url: http://localhost:${SERVER_PORT:8080}
     prod-url: ${PROD_DOMAIN:https://user-api.com}:${PROD_PORT:8080}

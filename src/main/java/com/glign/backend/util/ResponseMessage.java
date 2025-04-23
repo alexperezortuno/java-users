@@ -9,4 +9,9 @@ import org.springframework.http.HttpStatus;
 public class ResponseMessage<T> {
     private HttpStatus code;
     private T dto;
+
+    public ResponseMessage(T dto, HttpStatus code) {
+        this.code = code;
+        this.dto = dto;
+    }
 }
