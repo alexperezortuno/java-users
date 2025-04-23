@@ -18,7 +18,8 @@ public enum ResponseCode {
     PHONE_ADDED(-11, "phone added"),
     NUMBER_REQUIRED(-12, "number required"),
     PHONE_NOT_FOUND(-13, "phone not found"),
-    PHONE_DELETED(-14, "phone deleted");
+    PHONE_DELETED(-14, "phone deleted"),
+    PHONE_EMPTY(-15, "phone empty"),;
 
     private final int code;
     private final String message;

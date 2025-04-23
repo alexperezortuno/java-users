@@ -120,4 +120,24 @@ public class PhoneService implements IPhoneService {
             throw new ApiException(ResponseCode.INTERNAL_SERVER_ERROR.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @Override
+    public ResponseMessage<?> getPhones(String id) throws ApiException {
+        try {
+            var user = userRepository.findByUuid(UUID.fromString(id));
+            if (user == null) {
+                throw new ApiException(ResponseCode.USER_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+            }
+
+            var allPhones = phoneRepository.findAllByUser(user);
+            if (allPhones.isEmpty()) {
+                throw new ApiException(ResponseCode.PHONE_NOT_FOUND.getMessage(), HttpStatus.NO_CONTENT);
+            }
+            var response = PhoneMapper.INSTANCE.entityToDto(allPhones);
+            return new ResponseMessage<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("Error getting phones: {}", e.getMessage());
+            throw new ApiException(ResponseCode.INTERNAL_SERVER_ERROR.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
