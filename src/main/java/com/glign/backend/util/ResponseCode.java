@@ -13,7 +13,8 @@ public enum ResponseCode {
     INTERNAL_SERVER_ERROR(-5, "internal server error"),
     AUTHENTICATION_FAILED(-6, "authentication failed"),
     INVALID_TOKEN(-7, "invalid token"),
-    USER_NOT_FOUND(-8, "user not found");
+    USER_NOT_FOUND(-8, "user not found"),
+    PHONE_REQUIRED(-9, "phone required");
 
     private final int code;
     private final String message;

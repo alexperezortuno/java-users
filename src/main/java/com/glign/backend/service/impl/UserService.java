@@ -56,6 +56,10 @@ public class UserService implements IUserService {
             throw new ApiException(ResponseCode.INVALID_PASSWORD.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
+        if (userCreateRequestDto.getPhones() == null || userCreateRequestDto.getPhones().isEmpty()) {
+            throw new ApiException(ResponseCode.PHONE_REQUIRED.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
         try {
             var user = UserMapper.INSTANCE.dtoToEntity(userCreateRequestDto);
             user.setActive(true);
