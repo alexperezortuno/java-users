@@ -17,4 +17,10 @@ public class PhoneReqDto implements Serializable {
 
     @NotBlank(message = "country code is required")
     private String countryCode;
+
+    public PhoneReqDto(String number, String cityCode, String countryCode) {
+        this.number = number;
+        this.cityCode = cityCode;
+        this.countryCode = countryCode;
+    }
 }
