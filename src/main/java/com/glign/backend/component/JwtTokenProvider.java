@@ -1,4 +1,4 @@
-package com.glign.backend.provider;
+package com.glign.backend.component;
 
 import com.glign.backend.jpa.entity.User;
 import io.jsonwebtoken.Claims;

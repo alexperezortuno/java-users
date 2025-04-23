@@ -18,13 +18,27 @@ public class UserController {
         this.userService = userService;
     }
 
+    /**
+     * Create a new user
+     *
+     * @param request UserRequestDto
+     * @return ResponseEntity<UserResponseDto>
+     */
     @PostMapping("")
     public ResponseEntity<?> getUser(@RequestBody UserRequestDto request) throws ApiException {
-        try {
-            var responseMessage = userService.createUser(request);
-            return UserHttpResponseBuilder.buildResponse(responseMessage);
-        } catch (ApiException e) {
-            return e.getResponse();
-        }
+        var responseMessage = userService.createUser(request);
+        return UserHttpResponseBuilder.buildResponse(responseMessage);
+    }
+
+    /**
+     * Get user by id
+     *
+     * @param id User id
+     * @return ResponseEntity<UserResponseDto>
+     */
+    @GetMapping("")
+    public ResponseEntity<?> getUserById(@PathVariable String id) throws ApiException {
+        var responseMessage = userService.getUserById(id);
+        return UserHttpResponseBuilder.buildResponse(responseMessage);
     }
 }

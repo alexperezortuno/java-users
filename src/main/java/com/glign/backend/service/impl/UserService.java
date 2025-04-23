@@ -5,7 +5,7 @@ import com.glign.backend.dto.UserResponseDto;
 import com.glign.backend.exception.ApiException;
 import com.glign.backend.jpa.entity.User;
 import com.glign.backend.mapper.UserMapper;
-import com.glign.backend.provider.JwtTokenProvider;
+import com.glign.backend.component.JwtTokenProvider;
 import com.glign.backend.repository.UserRepository;
 import com.glign.backend.service.IUserService;
 import com.glign.backend.util.ResponseCode;

@@ -20,6 +20,7 @@
 		<org.springframework.jpa>3.4.4</org.springframework.jpa>
 		<org.springframework.web>3.4.4</org.springframework.web>
 		<org.springframework.validation>3.4.4</org.springframework.validation>
+		<org.springframework.security>3.4.4</org.springframework.security>
 		<com.h2database.version>2.3.232</com.h2database.version>
 		<org.postgresql.version>42.7.5</org.postgresql.version>
 		<fasterxml.jackson.version>2.15.2</fasterxml.jackson.version>
@@ -106,7 +107,13 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- JWT -->
+		<!-- Security -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+			<version>${org.springframework.security}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-api</artifactId>
