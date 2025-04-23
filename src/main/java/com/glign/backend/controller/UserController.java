@@ -38,7 +38,8 @@ public class UserController {
      */
     @GetMapping("")
     public ResponseEntity<?> getUserById(@PathVariable String id) throws ApiException {
-        var responseMessage = userService.getUserById(id);
-        return UserHttpResponseBuilder.buildResponse(responseMessage);
+        return null;
+        //var responseMessage = userService.getUserById(id);
+        //return UserHttpResponseBuilder.buildResponse(responseMessage);
     }
 }
