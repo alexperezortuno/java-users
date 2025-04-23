@@ -71,6 +71,9 @@ public class UserController {
     /**
      * Update phones of a user
      *
+     * @param id User id
+     * @param request PhoneUpdateRequestDto
+     * @return ResponseEntity>
      */
     @PatchMapping("/{id}/phones")
     public ResponseEntity<?> updatePhones(@PathVariable String id, @RequestBody PhoneUpdateRequestDto request) throws ApiException {
