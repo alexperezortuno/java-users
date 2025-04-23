@@ -1,5 +1,6 @@
 package com.glign.backend.service.impl;
 
+import com.glign.backend.dto.NumberReqDto;
 import com.glign.backend.dto.PhoneReqDto;
 import com.glign.backend.dto.PhoneUpdateRequestDto;
 import com.glign.backend.dto.MessageResponse;
@@ -15,6 +16,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -89,6 +91,32 @@ public class PhoneService implements IPhoneService {
             return new ResponseMessage<>(new MessageResponse(ResponseCode.PHONE_ADDED.getMessage()), HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error adding phones: {}", e.getMessage());
+            throw new ApiException(ResponseCode.INTERNAL_SERVER_ERROR.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    @Transactional
+    public ResponseMessage<?> deletePhones(String id, NumberReqDto request) throws ApiException {
+        try {
+            if (request.getNumber().isEmpty()) {
+                throw new ApiException(ResponseCode.NUMBER_REQUIRED.getMessage(), HttpStatus.BAD_REQUEST);
+            }
+
+            var user = userRepository.findByUuid(UUID.fromString(id));
+            if (user == null) {
+                throw new ApiException(ResponseCode.USER_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+            }
+
+            var phone = phoneRepository.findByUserIdAndNumber(user.getId(), request.getNumber());
+            if (phone.isEmpty()) {
+                throw new ApiException(ResponseCode.PHONE_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+            }
+
+            phoneRepository.deleteById(phone.orElseThrow().getId());
+            return new ResponseMessage<>(new MessageResponse(ResponseCode.PHONE_DELETED.getMessage()), HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("Error deleting phones: {}", e.getMessage());
             throw new ApiException(ResponseCode.INTERNAL_SERVER_ERROR.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

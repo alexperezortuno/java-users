@@ -7,7 +7,13 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "phones")
+@Table(
+        name = "phones",
+        indexes = {
+                @Index(name = "idx_user_id", columnList = "user_id"),
+                @Index(name = "idx_user_id_phone_number", columnList = "user_id, phone_number")
+        }
+)
 public class Phone extends BaseEntity<Phone> {
     @Id
     @SequenceGenerator(name = "AC_PHONE_SEQ", sequenceName = "ac.AC_PHONE_SEQ", allocationSize = 1)

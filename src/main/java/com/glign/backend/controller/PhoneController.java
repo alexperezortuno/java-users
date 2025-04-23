@@ -1,5 +1,6 @@
 package com.glign.backend.controller;
 
+import com.glign.backend.dto.NumberReqDto;
 import com.glign.backend.dto.PhoneReqDto;
 import com.glign.backend.dto.PhoneUpdateRequestDto;
 import com.glign.backend.exception.ApiException;
@@ -52,8 +53,8 @@ public class PhoneController {
      * @return ResponseEntity>
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletePhones(@PathVariable String id) throws ApiException {
-        var responseMessage = phoneService.deletePhones(id);
+    public ResponseEntity<?> deletePhones(@PathVariable String id, @RequestBody NumberReqDto number) throws ApiException {
+        var responseMessage = phoneService.deletePhones(id, number);
         return UserHttpResponseBuilder.buildResponse(responseMessage);
     }
 }
