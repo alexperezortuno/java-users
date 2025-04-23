@@ -3,6 +3,7 @@ package com.glign.backend.service.impl;
 import com.glign.backend.dto.UserRequestDto;
 import com.glign.backend.dto.UserResponseMessage;
 import com.glign.backend.exception.ApiException;
+import com.glign.backend.jpa.entity.Phone;
 import com.glign.backend.jpa.entity.User;
 import com.glign.backend.mapper.UserMapper;
 import com.glign.backend.provider.JwtTokenProvider;
@@ -54,6 +55,7 @@ public class UserService implements IUserService {
         try {
             var user = UserMapper.INSTANCE.dtoToEntity(userRequestDto);
             user.setActive(true);
+            user.getPhones().forEach(phone -> phone.setUser(user));
 
             String token = tokenProvider.generateToken(user);
             user.setToken(token);

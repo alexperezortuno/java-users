@@ -8,6 +8,12 @@ server:
 
 # Database
 spring:
+  sql:
+    init:
+      mode: ${DB_INIT_MODE:never} # always, never, embedded
+      platform: ${DB_PLATFORM:h2} # h2, postgres
+      schema-locations: classpath:/db/init/schema.sql
+      data-locations: classpath:/db/init/data.sql
   datasource:
     url: ${DB_URL:jdbc:h2:mem:userdb} # jdbc:h2:mem:userdb for H2 in-memory | jdbc:postgresql://localhost:5432/userdb for PostgreSQL
     driver-class-name: ${DB_DRIVER_CLASS_NAME:org.h2.Driver}

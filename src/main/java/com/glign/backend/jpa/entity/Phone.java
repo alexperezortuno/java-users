@@ -16,7 +16,7 @@ public class Phone extends BaseEntity<Phone> {
     private Long id;
 
     @Column(name = "phone_number", nullable = false)
-    private String phoneNumber;
+    private String number;
 
     @Column(name = "city_code", nullable = false)
     private String cityCode;
