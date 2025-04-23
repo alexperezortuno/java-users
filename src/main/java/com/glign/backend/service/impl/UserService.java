@@ -3,6 +3,7 @@ package com.glign.backend.service.impl;
 import com.glign.backend.dto.SimpleResponse;
 import com.glign.backend.dto.UserCreateRequestDto;
 import com.glign.backend.dto.UserResponseDto;
+import com.glign.backend.dto.UserUpdateRequestDto;
 import com.glign.backend.exception.ApiException;
 import com.glign.backend.jpa.entity.User;
 import com.glign.backend.mapper.UserMapper;
@@ -103,13 +104,14 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public ResponseMessage<UserResponseDto> updateUser(String id, UserCreateRequestDto userCreateRequestDto) throws ApiException {
+    public ResponseMessage<UserResponseDto> updateUser(String id, UserUpdateRequestDto userCreateRequestDto) throws ApiException {
         try {
             var user = userRepository.findByUuid(UUID.fromString(id));
             if (user == null) {
                 throw new ApiException(ResponseCode.USER_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
             }
             user.setName(userCreateRequestDto.getName());
+            user.setActive(userCreateRequestDto.isActive());
             userRepository.save(user);
             var response = UserMapper.INSTANCE.reduceEntityToDto(user);
             return new ResponseMessage<>(response, HttpStatus.OK);
