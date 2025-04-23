@@ -13,10 +13,6 @@ import java.util.Date;
 @Setter
 @MappedSuperclass
 public abstract class BaseEntity<U> {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_date")
     private Date createdDate;

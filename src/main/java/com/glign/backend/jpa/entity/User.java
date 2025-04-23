@@ -13,6 +13,12 @@ import java.util.UUID;
 @Setter
 @Table(name = "users")
 public class User extends BaseEntity<User> {
+    @Id
+    @SequenceGenerator(name = "AC_AUTHORITY_SEQ", sequenceName = "ac.AC_AUTHORITY_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AC_AUTHORITY_SEQ")
+    @Column(name = "id", updatable = false, nullable = false)
+    private Long id;
+
     @Column(name = "uuid", updatable = false, nullable = false)
     private UUID uuid = UUID.randomUUID();
 

@@ -3,7 +3,6 @@ package com.glign.backend.service.impl;
 import com.glign.backend.dto.UserRequestDto;
 import com.glign.backend.dto.UserResponseMessage;
 import com.glign.backend.exception.ApiException;
-import com.glign.backend.jpa.entity.Phone;
 import com.glign.backend.jpa.entity.User;
 import com.glign.backend.mapper.UserMapper;
 import com.glign.backend.provider.JwtTokenProvider;
