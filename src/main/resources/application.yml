@@ -1,3 +1,6 @@
+app:
+  schema: ${APP_SCHEMA:ac} # Default schema for the application
+
 server:
   port: ${SERVER_PORT:8080}
   servlet:
@@ -23,8 +26,8 @@ spring:
       path: /h2-console
   jpa:
     database-platform: ${DB_DIALECT:org.hibernate.dialect.H2Dialect} # org.hibernate.dialect.PostgreSQLDialect
-    generate-ddl: ${DB_GENERATE_DDL:false}
-    show-sql: true
+    generate-ddl: ${DB_GENERATE_DDL:false} # true to generate DDL
+    show-sql: ${DB_SHOW_SQL:false}
     hibernate:
       ddl-auto: ${DB_DDL_AUTO:none} # none, validate, update, create, create-drop
     properties:
@@ -32,6 +35,9 @@ spring:
         dialect: ${DB_DIALECT:org.hibernate.dialect.H2Dialect} # org.hibernate.dialect.PostgreSQLDialect
         format_sql: ${DB_FORMAT_SQL:false}
         show_sql: ${DB_SHOW_SQL:false}
+      default_schema: ${DB_SCHEMA:ac}
+      hbm2ddl:
+        create_namespaces: ${DB_CREATE_NAMESPACES:false}
   boot:
     admin:
       client:
