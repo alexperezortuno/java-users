@@ -28,7 +28,7 @@ public interface UserMapper {
     @Mapping(target = "id", source = "uuid")
     @Mapping(target = "created", expression = "java(user.getCreatedDate())")
     @Mapping(target = "lastModified", source = "lastModifiedDate")
-    UserFullResDto reduceEntityToDto(User user);
+    UserGetResDto reduceForGetUser(User user);
 
     @Mapping(target = "id", source = "uuid")
     @Mapping(target = "created", expression = "java(user.getCreatedDate())")

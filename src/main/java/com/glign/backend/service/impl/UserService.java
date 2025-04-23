@@ -82,7 +82,7 @@ public class UserService implements IUserService {
             if (user == null) {
                 throw new ApiException(ResponseCode.USER_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
             }
-            var response = UserMapper.INSTANCE.reduceEntityToDto(user);
+            var response = UserMapper.INSTANCE.reduceForGetUser(user);
             return new ResponseMessage<>(response, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error getting user: {}", e.getMessage());
