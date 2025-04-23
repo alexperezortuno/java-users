@@ -23,10 +23,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/user/**").authenticated() // Protege solo los GET en /user/**
-                        .requestMatchers(HttpMethod.PATCH, "/user/**").authenticated()
-                        .requestMatchers(HttpMethod.DELETE, "/user/**").authenticated()
-                        .requestMatchers(HttpMethod.PUT, "/user/**").authenticated()
+                        .requestMatchers("/user/**").authenticated()
+                        .requestMatchers("/phone/**").authenticated()
+                        .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
                         .anyRequest().permitAll()
