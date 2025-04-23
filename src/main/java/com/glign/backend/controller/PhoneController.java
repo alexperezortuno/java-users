@@ -5,7 +5,7 @@ import com.glign.backend.dto.PhoneReqDto;
 import com.glign.backend.dto.PhoneUpdateRequestDto;
 import com.glign.backend.exception.ApiException;
 import com.glign.backend.service.IPhoneService;
-import com.glign.backend.util.UserHttpResponseBuilder;
+import com.glign.backend.util.HttpResponseBuilder;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +31,7 @@ public class PhoneController {
     @PatchMapping("/{id}")
     public ResponseEntity<?> updatePhones(@PathVariable String id, @Valid @RequestBody PhoneUpdateRequestDto request) throws ApiException {
         var responseMessage = phoneService.updatePhones(id, request);
-        return UserHttpResponseBuilder.buildResponse(responseMessage);
+        return HttpResponseBuilder.buildResponse(responseMessage);
     }
 
     /**
@@ -43,7 +43,7 @@ public class PhoneController {
     @PostMapping("/{id}")
     public ResponseEntity<?> addPhones(@PathVariable String id, @Valid @RequestBody PhoneReqDto request) throws ApiException {
         var responseMessage = phoneService.addPhones(id, request);
-        return UserHttpResponseBuilder.buildResponse(responseMessage);
+        return HttpResponseBuilder.buildResponse(responseMessage);
     }
 
     /**
@@ -55,7 +55,7 @@ public class PhoneController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePhones(@PathVariable String id, @RequestBody NumberReqDto number) throws ApiException {
         var responseMessage = phoneService.deletePhones(id, number);
-        return UserHttpResponseBuilder.buildResponse(responseMessage);
+        return HttpResponseBuilder.buildResponse(responseMessage);
     }
 
     /**
@@ -67,6 +67,6 @@ public class PhoneController {
     @GetMapping("/all/{id}")
     public ResponseEntity<?> getPhones(@PathVariable String id) throws ApiException {
         var responseMessage = phoneService.getPhones(id);
-        return UserHttpResponseBuilder.buildResponse(responseMessage);
+        return HttpResponseBuilder.buildResponse(responseMessage);
     }
 }

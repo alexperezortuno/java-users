@@ -4,7 +4,7 @@ import com.glign.backend.dto.UserCreateRequestDto;
 import com.glign.backend.dto.UserUpdateReqDto;
 import com.glign.backend.exception.ApiException;
 import com.glign.backend.service.IUserService;
-import com.glign.backend.util.UserHttpResponseBuilder;
+import com.glign.backend.util.HttpResponseBuilder;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +29,7 @@ public class UserController {
     @PostMapping("")
     public ResponseEntity<?> getUser(@Valid @RequestBody UserCreateRequestDto request) throws ApiException {
         var responseMessage = userService.createUser(request);
-        return UserHttpResponseBuilder.buildResponse(responseMessage);
+        return HttpResponseBuilder.buildResponse(responseMessage);
     }
 
     /**
@@ -41,7 +41,7 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable String id) throws ApiException {
         var responseMessage = userService.getUserById(id);
-        return UserHttpResponseBuilder.buildResponse(responseMessage);
+        return HttpResponseBuilder.buildResponse(responseMessage);
     }
 
     /**
@@ -53,7 +53,7 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> removeUserById(@PathVariable String id) throws ApiException {
         var responseMessage = userService.removeUserById(id);
-        return UserHttpResponseBuilder.buildResponse(responseMessage);
+        return HttpResponseBuilder.buildResponse(responseMessage);
     }
 
     /**
@@ -65,7 +65,7 @@ public class UserController {
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateUser(@PathVariable String id, @Valid @RequestBody UserUpdateReqDto request) throws ApiException {
         var responseMessage = userService.updateUser(id, request);
-        return UserHttpResponseBuilder.buildResponse(responseMessage);
+        return HttpResponseBuilder.buildResponse(responseMessage);
     }
 
     /**
@@ -77,6 +77,6 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUserCompletely(@PathVariable String id, @Valid @RequestBody UserUpdateReqDto request) throws ApiException {
         var responseMessage = userService.updateUser(id, request);
-        return UserHttpResponseBuilder.buildResponse(responseMessage);
+        return HttpResponseBuilder.buildResponse(responseMessage);
     }
 }
