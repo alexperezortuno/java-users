@@ -1,6 +1,6 @@
 package com.glign.backend.controller;
 
-import com.glign.backend.dto.UserRequestDto;
+import com.glign.backend.dto.UserCreateRequestDto;
 import com.glign.backend.exception.ApiException;
 import com.glign.backend.service.IUserService;
 import com.glign.backend.util.UserHttpResponseBuilder;
@@ -21,25 +21,48 @@ public class UserController {
     /**
      * Create a new user
      *
-     * @param request UserRequestDto
+     * @param request UserCreateRequestDto
      * @return ResponseEntity<UserResponseDto>
      */
     @PostMapping("")
-    public ResponseEntity<?> getUser(@RequestBody UserRequestDto request) throws ApiException {
+    public ResponseEntity<?> getUser(@RequestBody UserCreateRequestDto request) throws ApiException {
         var responseMessage = userService.createUser(request);
         return UserHttpResponseBuilder.buildResponse(responseMessage);
     }
 
     /**
-     * Get user by id
+     * Get user by UUID
      *
      * @param id User id
      * @return ResponseEntity<UserResponseDto>
      */
-    @GetMapping("")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable String id) throws ApiException {
-        return null;
-        //var responseMessage = userService.getUserById(id);
-        //return UserHttpResponseBuilder.buildResponse(responseMessage);
+        var responseMessage = userService.getUserById(id);
+        return UserHttpResponseBuilder.buildResponse(responseMessage);
+    }
+
+    /**
+     * Remove a user by UUID
+     *
+     * @param id User id
+     * @return ResponseEntity<UserResponseDto>
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> removeUserById(@PathVariable String id) throws ApiException {
+        var responseMessage = userService.removeUserById(id);
+        return UserHttpResponseBuilder.buildResponse(responseMessage);
+    }
+
+    /**
+     * Update a user
+     *
+     * @param request UserCreateRequestDto
+     * @return ResponseEntity<UserResponseDto>
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable String id, @RequestBody UserCreateRequestDto request) throws ApiException {
+        var responseMessage = userService.updateUser(id, request);
+        return UserHttpResponseBuilder.buildResponse(responseMessage);
     }
 }

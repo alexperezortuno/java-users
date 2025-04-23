@@ -1,6 +1,7 @@
 package com.glign.backend.service.impl;
 
-import com.glign.backend.dto.UserRequestDto;
+import com.glign.backend.dto.SimpleResponse;
+import com.glign.backend.dto.UserCreateRequestDto;
 import com.glign.backend.dto.UserResponseDto;
 import com.glign.backend.exception.ApiException;
 import com.glign.backend.jpa.entity.User;
@@ -15,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 @Log4j2
@@ -39,21 +42,21 @@ public class UserService implements IUserService {
     private String emailRegex;
 
     @Override
-    public ResponseMessage<UserResponseDto> createUser(UserRequestDto userRequestDto) throws ApiException {
-        if (userRepository.existsByEmail(userRequestDto.getEmail())) {
+    public ResponseMessage<UserResponseDto> createUser(UserCreateRequestDto userCreateRequestDto) throws ApiException {
+        if (userRepository.existsByEmail(userCreateRequestDto.getEmail())) {
             throw new ApiException(ResponseCode.EMAIL_EXIST.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
-        if (!userRequestDto.getEmail().matches(emailRegex)) {
+        if (!userCreateRequestDto.getEmail().matches(emailRegex)) {
             throw new ApiException(ResponseCode.EMAIL_REQUIRED.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
-        if (!userRequestDto.getPassword().matches(passwordRegex)) {
+        if (!userCreateRequestDto.getPassword().matches(passwordRegex)) {
             throw new ApiException(ResponseCode.INVALID_PASSWORD.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
         try {
-            var user = UserMapper.INSTANCE.dtoToEntity(userRequestDto);
+            var user = UserMapper.INSTANCE.dtoToEntity(userCreateRequestDto);
             user.setActive(true);
             user.getPhones().forEach(phone -> phone.setUser(user));
 
@@ -65,6 +68,53 @@ public class UserService implements IUserService {
             return new ResponseMessage<>(response, HttpStatus.CREATED);
         } catch (Exception e) {
             log.error("Error creating user: {}", e.getMessage());
+            throw new ApiException(ResponseCode.INTERNAL_SERVER_ERROR.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseMessage<UserResponseDto> getUserById(String id) throws ApiException {
+        try {
+            var user = userRepository.findByUuid(UUID.fromString(id));
+            if (user == null) {
+                throw new ApiException(ResponseCode.USER_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+            }
+            var response = UserMapper.INSTANCE.reduceEntityToDto(user);
+            return new ResponseMessage<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("Error getting user: {}", e.getMessage());
+            throw new ApiException(ResponseCode.INTERNAL_SERVER_ERROR.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseMessage<SimpleResponse> removeUserById(String id) throws ApiException {
+        try {
+            var user = userRepository.findByUuid(UUID.fromString(id));
+            if (user == null) {
+                throw new ApiException(ResponseCode.USER_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+            }
+            userRepository.delete(user);
+            return new ResponseMessage<>(new SimpleResponse(ResponseCode.USER_DELETED.getMessage()), HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("error deleting user: {}", e.getMessage());
+            throw new ApiException(ResponseCode.INTERNAL_SERVER_ERROR.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseMessage<UserResponseDto> updateUser(String id, UserCreateRequestDto userCreateRequestDto) throws ApiException {
+        try {
+            var user = userRepository.findByUuid(UUID.fromString(id));
+            if (user == null) {
+                throw new ApiException(ResponseCode.USER_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+            }
+            user.setName(userCreateRequestDto.getName());
+            userRepository.save(user);
+            var response = UserMapper.INSTANCE.reduceEntityToDto(user);
+            return new ResponseMessage<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("Error updating user: {}", e.getMessage());
             throw new ApiException(ResponseCode.INTERNAL_SERVER_ERROR.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

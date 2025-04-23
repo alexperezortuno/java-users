@@ -2,7 +2,7 @@ package com.glign.backend.mapper;
 
 import com.glign.backend.dto.PhoneDto;
 import com.glign.backend.dto.UserDto;
-import com.glign.backend.dto.UserRequestDto;
+import com.glign.backend.dto.UserCreateRequestDto;
 import com.glign.backend.dto.UserResponseDto;
 import com.glign.backend.jpa.entity.Phone;
 import com.glign.backend.jpa.entity.User;
@@ -18,7 +18,7 @@ public interface UserMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "uuid", expression = "java(java.util.UUID.randomUUID())")
-    User dtoToEntity(UserRequestDto userRequestDto);
+    User dtoToEntity(UserCreateRequestDto userCreateRequestDto);
 
     @Mapping(target = "id", ignore = true)
     User dtoToEntity(UserDto user);

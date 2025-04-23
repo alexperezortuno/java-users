@@ -23,8 +23,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/user/**").authenticated() // Protege solo los GET en /user/**
-                        .anyRequest().permitAll() // Permite el acceso a otros endpoints
+                        //.requestMatchers(HttpMethod.GET, "/user/**").authenticated() // Protege solo los GET en /user/**
+                        //.requestMatchers("/h2-console/**").permitAll()
+                        .anyRequest().permitAll()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

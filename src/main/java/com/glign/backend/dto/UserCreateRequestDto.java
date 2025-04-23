@@ -11,7 +11,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class UserRequestDto {
+public class UserCreateRequestDto {
     @NotBlank(message = "name is required")
     private String name;
 

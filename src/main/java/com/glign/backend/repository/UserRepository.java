@@ -6,7 +6,10 @@ import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.UUID;
+
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
     boolean existsByEmail(@NotBlank(message = "email is required") @Email(regexp = "^[A-Za-z0-9+_.-]+@(.+)$", message = "El formato del correo no es válido") String email);
+    User findByUuid(UUID uuid);
 }
