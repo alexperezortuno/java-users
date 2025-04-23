@@ -10,7 +10,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@Table(name = "users", schema = "ac")
+@Table(name = "users")
 public class User extends BaseEntity<User> {
     @Column(name = "name", nullable = false)
     private String name;

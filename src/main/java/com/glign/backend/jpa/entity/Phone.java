@@ -7,7 +7,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "phones", schema = "ac")
+@Table(name = "phones")
 public class Phone extends BaseEntity<Phone> {
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;

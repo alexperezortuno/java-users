@@ -9,7 +9,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class UserRequest {
+public class UserRequestDto {
     @NotBlank(message = "name is required")
     private String name;
 
