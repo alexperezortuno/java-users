@@ -1,5 +1,8 @@
 package com.glign.backend.util;
 
+import lombok.Getter;
+
+@Getter
 public enum ResponseCode {
     EMAIL_REQUIRED(-1, "email required"),
     EMAIL_EXIST(-2, "email already exists"),
@@ -13,13 +16,5 @@ public enum ResponseCode {
     ResponseCode(int code, String message) {
         this.code = code;
         this.message = message;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public String getMessage() {
-        return message;
     }
 }
