@@ -1,6 +1,7 @@
 package com.glign.backend.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +13,6 @@ public class UserUpdateReqDto implements Serializable {
     @NotBlank(message = "name is required")
     private String name;
 
-    @NotBlank(message = "status is required")
-    private boolean isActive;
+    @NotNull(message = "active is required")
+    private boolean active;
 }
