@@ -25,7 +25,7 @@
 		<fasterxml.jackson.version>2.15.2</fasterxml.jackson.version>
 		<org.springframework.jdbc>3.4.4</org.springframework.jdbc>
 		<org.springdoc.webmvc.version>2.0.4</org.springdoc.webmvc.version>
-		<io.jsonwebtoken.version>0.9.1</io.jsonwebtoken.version>
+		<io.jsonwebtoken.version>0.11.5</io.jsonwebtoken.version>
 	</properties>
 
 	<url/>
@@ -109,8 +109,22 @@
 		<!-- JWT -->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt</artifactId>
+			<artifactId>jjwt-api</artifactId>
 			<version>${io.jsonwebtoken.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>${io.jsonwebtoken.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>${io.jsonwebtoken.version}</version>
+			<scope>runtime</scope>
 		</dependency>
 
 		<!-- Swagger  -->
