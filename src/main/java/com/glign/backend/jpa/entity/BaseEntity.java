@@ -14,9 +14,7 @@ import java.util.Date;
 @MappedSuperclass
 public abstract class BaseEntity<U> {
     @Id
-    @SequenceGenerator(name = "AC_AUTHORITY_SEQ", sequenceName = "ac.AC_AUTHORITY_SEQ", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AC_AUTHORITY_SEQ")
-    @Column(name = "id", updatable = false, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Temporal(TemporalType.TIMESTAMP)

@@ -25,7 +25,7 @@ public class JwtTokenProvider {
 
     @PostConstruct
     public void init() {
-        this.key = new SecretKeySpec(Base64.getDecoder().decode(jwtSecret), SignatureAlgorithm.HS512.getJcaName());
+        this.key = new SecretKeySpec(Base64.getDecoder().decode(jwtSecret), SignatureAlgorithm.HS384.getJcaName());
     }
 
     public String generateToken(User user) {
@@ -36,7 +36,7 @@ public class JwtTokenProvider {
                 .setSubject(user.getUuid().toString())
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
-                .signWith(this.key, SignatureAlgorithm.HS512)
+                .signWith(this.key, SignatureAlgorithm.HS384)
                 .compact();
     }
 
