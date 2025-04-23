@@ -10,6 +10,7 @@ import com.glign.backend.provider.JwtTokenProvider;
 import com.glign.backend.repository.UserRepository;
 import com.glign.backend.service.IUserService;
 import com.glign.backend.util.ResponseCode;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Log4j2
 public class UserService implements IUserService {
     private UserRepository userRepository;
     private JwtTokenProvider tokenProvider;
@@ -33,47 +35,39 @@ public class UserService implements IUserService {
         this.tokenProvider = tokenProvider;
     }
 
-    @Value("${password.regex}")
+    @Value("${regexes.password}")
     private String passwordRegex;
+
+    @Value("${regexes.email}")
+    private String emailRegex;
 
     @Override
     public UserResponseMessage createUser(UserRequestDto userRequestDto) throws ApiException {
         if (userRepository.existsByEmail(userRequestDto.getEmail())) {
-            throw new ApiException(ResponseCode.EMAIL_EXIST.getMessage());
+            throw new ApiException(ResponseCode.EMAIL_EXIST.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
-        if (userRequestDto.getEmail() == null || userRequestDto.getEmail().isEmpty()) {
-            throw new ApiException(ResponseCode.EMAIL_REQUIRED.getMessage());
+        if (!userRequestDto.getEmail().matches(emailRegex)) {
+            throw new ApiException(ResponseCode.EMAIL_REQUIRED.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
         if (!userRequestDto.getPassword().matches(passwordRegex)) {
-            throw new ApiException(ResponseCode.INVALID_PASSWORD.getMessage());
+            throw new ApiException(ResponseCode.INVALID_PASSWORD.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
-        var user = UserMapper.INSTANCE.dtoToEntity(userRequestDto);
-        user.setName(userRequestDto.getName());
-        user.setEmail(userRequestDto.getEmail());
-        user.setPassword(userRequestDto.getPassword());
-        user.setActive(true);
+        try {
+            var user = UserMapper.INSTANCE.dtoToEntity(userRequestDto);
+            user.setActive(true);
 
-        List<Phone> phones = userRequestDto.getPhones().stream()
-                .map(phoneDto -> {
-                    Phone phone = new Phone();
-                    phone.setPhoneNumber(phoneDto.getNumber());
-                    phone.setCityCode(phoneDto.getCityCode());
-                    phone.setCountryCode(phoneDto.getCountryCode());
-                    phone.setUser(user);
-                    return phone;
-                })
-                .collect(Collectors.toList());
+            String token = tokenProvider.generateToken(user);
+            user.setToken(token);
 
-        user.setPhones(phones);
-
-        String token = tokenProvider.generateToken(user);
-        user.setToken(token);
-
-        User savedUser = userRepository.save(user);
-        var response = UserMapper.INSTANCE.entityToDto(savedUser);
-        return new UserResponseMessage(response, HttpStatus.CREATED);
+            User savedUser = userRepository.save(user);
+            var response = UserMapper.INSTANCE.entityToDto(savedUser);
+            return new UserResponseMessage(response, HttpStatus.CREATED);
+        } catch (Exception e) {
+            log.error("Error creating user: {}", e.getMessage());
+            throw new ApiException(ResponseCode.INTERNAL_SERVER_ERROR.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

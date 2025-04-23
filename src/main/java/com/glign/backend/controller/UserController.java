@@ -20,7 +20,11 @@ public class UserController {
 
     @PostMapping("")
     public ResponseEntity<?> getUser(@RequestBody UserRequestDto request) throws ApiException {
-        var responseMessage = userService.createUser(request);
-        return UserHttpResponseBuilder.buildResponse(responseMessage);
+        try {
+            var responseMessage = userService.createUser(request);
+            return UserHttpResponseBuilder.buildResponse(responseMessage);
+        } catch (ApiException e) {
+            return e.getResponse();
+        }
     }
 }

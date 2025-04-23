@@ -6,12 +6,16 @@ import lombok.Setter;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
 @Table(name = "users")
 public class User extends BaseEntity<User> {
+    @Column(name = "uuid", updatable = false, nullable = false)
+    private UUID uuid = UUID.randomUUID();
+
     @Column(name = "name", nullable = false)
     private String name;
 

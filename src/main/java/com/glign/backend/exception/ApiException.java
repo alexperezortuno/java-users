@@ -1,25 +1,19 @@
 package com.glign.backend.exception;
 
-import com.glign.backend.dto.ErrorResponse;
-import java.util.ArrayList;
-import java.util.List;
+import com.glign.backend.util.ErrorMessage;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 public class ApiException extends Exception {
-    private final List<ErrorResponse> errorResponses = new ArrayList<>();
+    private final HttpStatus status;
 
-    public ApiException(String message) {
+    public ApiException(String message, HttpStatus status) {
         super(message);
+        this.status = status;
     }
 
-    public ApiException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public void addErrorResponse(ErrorResponse errorResponse) {
-        this.errorResponses.add(errorResponse);
-    }
-
-    public List<ErrorResponse> getErrorResponses() {
-        return errorResponses;
+    public ResponseEntity<ErrorMessage> getResponse() {
+        var error = new ErrorMessage(this.getMessage());
+        return new ResponseEntity<>(error, this.status);
     }
 }

@@ -1,9 +1,11 @@
 package com.glign.backend.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class PhoneDto {
     @NotBlank(message = "number is required")
     private String number;
