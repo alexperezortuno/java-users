@@ -54,6 +54,7 @@ public class JwtTokenProvider {
 
     public boolean validateToken(String token) {
         try {
+            token = cleanToken(token);
             Jwts.parserBuilder().setSigningKey(this.key).build().parseClaimsJws(token);
             return true;
         } catch (Exception e) {
@@ -62,25 +63,33 @@ public class JwtTokenProvider {
     }
 
     public String getUserIdFromToken(String token) {
-        if (token.contains("Bearer ") || token.contains("bearer ")) {
-            token = token.replace("Bearer ", "");
-            token = token.replace("bearer ", "");
-        }
+        token = cleanToken(token);
         Claims claims = Jwts.parserBuilder().setSigningKey(this.key).build().parseClaimsJws(token).getBody();
         return claims.getSubject();
     }
 
     public Date getExpirationDateFromToken(String token) {
+        token = cleanToken(token);
         Claims claims = Jwts.parserBuilder().setSigningKey(this.key).build().parseClaimsJws(token).getBody();
         return claims.getExpiration();
     }
 
     public boolean isTokenExpired(String token) {
+        token = cleanToken(token);
         Date expirationDate = getExpirationDateFromToken(token);
         return expirationDate.before(new Date());
     }
 
     public void removeToken(String token) {
+        token = cleanToken(token);
         tokenService.removeToken(token);
+    }
+
+    private String cleanToken(String token) {
+        if (token.contains("Bearer ") || token.contains("bearer ")) {
+            token = token.replace("Bearer ", "");
+            token = token.replace("bearer ", "");
+        }
+        return token;
     }
 }
