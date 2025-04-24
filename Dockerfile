@@ -19,5 +19,14 @@ COPY --from=builder /app/target/*.jar app.jar
 COPY entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 
+RUN useradd -m -u 1000 javaUser
+
+RUN chown -R javaUser:javaUser /app
+
+# Cambiar al usuario no root
+USER javaUser
+
+RUN ls -al
+
 # Set the entry point to run the application
 ENTRYPOINT ["/app/entrypoint.sh"]
