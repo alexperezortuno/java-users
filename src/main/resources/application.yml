@@ -24,14 +24,7 @@ server:
   jetty:
     connection-idle-timeout: ${SERVER_JETTY_IDLE_TIMEOUT:10000} # 10 seconds
 
-# Database
 spring:
-  web:
-    cors:
-      allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:8080} # Comma-separated list of allowed origins
-      allowed-methods: ${CORS_ALLOWED_METHODS:GET,POST,PUT,DELETE,OPTIONS} # Comma-separated list of allowed methods
-      allowed-headers: ${CORS_ALLOWED_HEADERS:Content-Type,Authorization} # Comma-separated list of allowed headers
-      allow-credentials: true
   sql:
     init:
       mode: ${DB_INIT_MODE:never} # always, never, embedded
