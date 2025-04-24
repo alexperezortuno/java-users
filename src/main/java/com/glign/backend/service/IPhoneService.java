@@ -7,8 +7,8 @@ import com.glign.backend.exception.ApiException;
 import com.glign.backend.util.ResponseMessage;
 
 public interface IPhoneService {
-    ResponseMessage<?> updatePhones(String id, PhoneUpdateRequestDto request) throws ApiException;
-    ResponseMessage<?> addPhones(String id, PhoneReqDto request) throws ApiException;
-    ResponseMessage<?> deletePhones(String id, NumberReqDto request) throws ApiException;
-    ResponseMessage<?> getPhones(String id) throws ApiException;
+    ResponseMessage<?> updatePhones(String authHeader, PhoneUpdateRequestDto request) throws ApiException;
+    ResponseMessage<?> addPhones(String authHeader, PhoneReqDto request) throws ApiException;
+    ResponseMessage<?> deletePhones(String authHeader, NumberReqDto request) throws ApiException;
+    ResponseMessage<?> getPhones(String authHeader) throws ApiException;
 }

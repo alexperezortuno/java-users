@@ -85,7 +85,9 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public ResponseMessage<UserFullResDto> getUserById(String id) throws ApiException {
+    public ResponseMessage<UserFullResDto> getUserById(String authHeader) throws ApiException {
+        var id = this.getId(authHeader);
+
         try {
             var user = userRepository.findByUuid(UUID.fromString(id));
             if (user == null) {
@@ -102,7 +104,9 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public ResponseMessage<MessageResponse> removeUserById(String id) throws ApiException {
+    public ResponseMessage<MessageResponse> removeUserById(String authHeader) throws ApiException {
+        var id = this.getId(authHeader);
+
         try {
             var user = userRepository.findByUuid(UUID.fromString(id));
             if (user == null) {
@@ -119,7 +123,9 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public ResponseMessage<UserUpdateResDto> updateUser(String id, UserUpdateReqDto userCreateRequestDto) throws ApiException {
+    public ResponseMessage<UserUpdateResDto> updateUser(String authHeader, UserUpdateReqDto userCreateRequestDto) throws ApiException {
+        var id = this.getId(authHeader);
+
         try {
             var user = userRepository.findByUuid(UUID.fromString(id));
             if (user == null) {
@@ -139,7 +145,9 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public ResponseMessage<List<UserGetResDto>> getAll() throws ApiException {
+    public ResponseMessage<List<UserGetResDto>> getAll(String authHeader) throws ApiException {
+        this.getId(authHeader);
+
         try {
             var users = userRepository.findAll();
             if (users.isEmpty()) {
@@ -152,6 +160,14 @@ public class UserService implements IUserService {
         } catch (Exception e) {
             log.error("Error users: {}", e.getMessage());
             throw new ApiException(ResponseCode.INTERNAL_SERVER_ERROR.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    private String getId(String authHeader) throws ApiException {
+        try {
+            return tokenProvider.getUserIdFromToken(authHeader);
+        } catch (Exception e) {
+            throw new ApiException(ResponseCode.LOGIN_PROBLEM.getMessage(), HttpStatus.UNAUTHORIZED);
         }
     }
 }

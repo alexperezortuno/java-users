@@ -2,6 +2,7 @@ package com.glign.backend.service.impl;
 
 import com.glign.backend.component.JwtTokenProvider;
 import com.glign.backend.dto.LoginRequestDto;
+import com.glign.backend.dto.MessageResponse;
 import com.glign.backend.dto.RegisterRequestDto;
 import com.glign.backend.dto.TokenDto;
 import com.glign.backend.exception.ApiException;
@@ -89,7 +90,8 @@ public class AuthService implements IAuthService {
             user.setActive(false);
             userRepository.save(user);
 
-            return new ResponseMessage<>(ResponseCode.USER_CREATED);
+            return new ResponseMessage<>(new MessageResponse(ResponseCode.USER_CREATED.getMessage()),
+                    ResponseCode.USER_CREATED.getCode());
         } catch (Exception e) {
             throw new ApiException(ResponseCode.REGISTRATION_PROBLEM.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }

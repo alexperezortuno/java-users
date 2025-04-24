@@ -62,6 +62,10 @@ public class JwtTokenProvider {
     }
 
     public String getUserIdFromToken(String token) {
+        if (token.contains("Bearer ") || token.contains("bearer ")) {
+            token = token.replace("Bearer ", "");
+            token = token.replace("bearer ", "");
+        }
         Claims claims = Jwts.parserBuilder().setSigningKey(this.key).build().parseClaimsJws(token).getBody();
         return claims.getSubject();
     }
