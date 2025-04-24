@@ -77,6 +77,7 @@ public class AuthService implements IAuthService {
             var user = new User();
             user.setEmail(request.getUsername());
             user.setPassword(passwordEncoder.encode(request.getPassword()));
+            user.setActive(false);
             userRepository.save(user);
 
             return new ResponseMessage<>(ResponseCode.USER_CREATED);
