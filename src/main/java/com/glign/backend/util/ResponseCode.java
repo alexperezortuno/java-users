@@ -4,22 +4,25 @@ import lombok.Getter;
 
 @Getter
 public enum ResponseCode {
-    USER_DELETED(1, "user deleted"),
-    EMAIL_REQUIRED(-1, "email required"),
-    EMAIL_EXIST(-2, "email already exists"),
-    PASSWORD_REQUIRED(-3, "password required"),
-    INVALID_PASSWORD(-4, "invalid password"),
-    INTERNAL_SERVER_ERROR(-5, "internal server error"),
-    AUTHENTICATION_FAILED(-6, "authentication failed"),
-    INVALID_TOKEN(-7, "invalid token"),
-    USER_NOT_FOUND(-8, "user not found"),
-    PHONE_REQUIRED(-9, "phone required"),
-    PHONE_UPDATED(-10, "phone updated"),
-    PHONE_ADDED(-11, "phone added"),
-    NUMBER_REQUIRED(-12, "number required"),
-    PHONE_NOT_FOUND(-13, "phone not found"),
-    PHONE_DELETED(-14, "phone deleted"),
-    PHONE_EMPTY(-15, "phone empty"),;
+    USER_DELETED(1, Constant.USER_DELETED),
+    EMAIL_REQUIRED(-1, Constant.EMAIL_REQUIRED),
+    EMAIL_EXIST(-2, Constant.EMAIL_ALREADY_EXIST),
+    PASSWORD_REQUIRED(-3, Constant.PASSWORD_REQUIRED),
+    INVALID_PASSWORD(-4, Constant.INVALID_PASSWORD),
+    INTERNAL_SERVER_ERROR(-5, Constant.INTERNAL_SERVER_ERROR),
+    AUTHENTICATION_FAILED(-6, Constant.AUTHENTICATION_FAILED),
+    INVALID_TOKEN(-7, Constant.INVALID_TOKEN),
+    USER_NOT_FOUND(-8, Constant.USER_NOT_FOUND),
+    PHONE_REQUIRED(-9, Constant.PHONE_REQUIRED),
+    PHONE_UPDATED(-10, Constant.PHONE_UPDATED),
+    PHONE_ADDED(-11, Constant.PHONE_ADDED),
+    NUMBER_REQUIRED(-12, Constant.NUMBER_REQUIRED),
+    PHONE_NOT_FOUND(-13, Constant.PHONE_NOT_FOUND),
+    PHONE_DELETED(-14, Constant.PHONE_DELETED),
+    PHONE_EMPTY(-15, Constant.PHONE_EMPTY),
+    LOGIN_PROBLEM(-16, Constant.LOGIN_PROBLEM),
+    USERNAME_AND_PASS_REQUIRED(-17, Constant.USERNAME_AND_PASS_REQUIRED),
+    USERNAME_OR_PASSWORD_NOT_FOUND(-18, Constant.USERNAME_OR_PASSWORD_NOT_FOUND);
 
     private final int code;
     private final String message;

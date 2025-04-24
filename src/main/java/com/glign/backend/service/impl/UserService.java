@@ -14,6 +14,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -23,6 +24,13 @@ import java.util.UUID;
 public class UserService implements IUserService {
     private UserRepository userRepository;
     private JwtTokenProvider tokenProvider;
+    private BCryptPasswordEncoder passwordEncoder;
+
+    @Value("${regexes.password}")
+    private String passwordRegex;
+
+    @Value("${regexes.email}")
+    private String emailRegex;
 
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
@@ -34,11 +42,10 @@ public class UserService implements IUserService {
         this.tokenProvider = tokenProvider;
     }
 
-    @Value("${regexes.password}")
-    private String passwordRegex;
-
-    @Value("${regexes.email}")
-    private String emailRegex;
+    @Autowired
+    private void setPasswordEncoder(BCryptPasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public ResponseMessage<UserFullResDto> createUser(UserCreateRequestDto userCreateRequestDto) throws ApiException {
@@ -65,6 +72,7 @@ public class UserService implements IUserService {
 
             String token = tokenProvider.generateToken(user);
             user.setToken(token);
+            user.setPassword(passwordEncoder.encode(userCreateRequestDto.getPassword()));
 
             User savedUser = userRepository.save(user);
             var response = UserMapper.INSTANCE.reduceForCreateUderDto(savedUser);

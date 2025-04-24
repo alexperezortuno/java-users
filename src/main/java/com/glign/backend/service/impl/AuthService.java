@@ -2,16 +2,54 @@ package com.glign.backend.service.impl;
 
 import com.glign.backend.dto.LoginRequestDto;
 import com.glign.backend.exception.ApiException;
+import com.glign.backend.repository.UserRepository;
 import com.glign.backend.service.IAuthService;
+import com.glign.backend.util.ResponseCode;
 import com.glign.backend.util.ResponseMessage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService implements IAuthService {
+    private UserRepository userRepository;
+    private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @Autowired
+    private void setPasswordEncoder(BCryptPasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
     @Override
     public ResponseMessage<?> login(LoginRequestDto request) throws ApiException {
-        // Implementación del método de inicio de sesión
-        return null;
+        try {
+            if (request.getUsername() == null || request.getPassword() == null) {
+                throw new ApiException(ResponseCode.USERNAME_AND_PASS_REQUIRED.getMessage(), HttpStatus.BAD_REQUEST);
+            }
+
+            if (!userRepository.existsByEmail(request.getUsername())) {
+                throw new ApiException(ResponseCode.USERNAME_OR_PASSWORD_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+            }
+
+            var user = userRepository.findByEmail(request.getUsername());
+            if (user == null) {
+                throw new ApiException(ResponseCode.USERNAME_OR_PASSWORD_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+            }
+
+            if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+                throw new ApiException(ResponseCode.USERNAME_AND_PASS_REQUIRED.getMessage(), HttpStatus.UNAUTHORIZED);
+            }
+
+            var token = tokenProvider.createToken(user.getId().toString(), user.getEmail());
+        } catch (Exception e) {
+            throw new ApiException(ResponseCode.LOGIN_PROBLEM.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override
