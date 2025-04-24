@@ -35,24 +35,24 @@ public class UserController {
     /**
      * Get user by UUID
      *
-     * @param authHeader Authorization id
+     * @param id User id
      * @return ResponseEntity<UserFullResDto>
      */
-    @GetMapping("")
-    public ResponseEntity<?> getUserById(@RequestHeader("Authorization") String authHeader) throws ApiException {
-        var responseMessage = userService.getUserById(authHeader);
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getUserById(@PathVariable String id) throws ApiException {
+        var responseMessage = userService.getUserById(id);
         return HttpResponseBuilder.buildResponse(responseMessage);
     }
 
     /**
      * Remove a user by UUID
      *
-     * @param authHeader Authorization id
+     * @param id User id
      * @return ResponseEntity<UserFullResDto>
      */
-    @DeleteMapping("")
-    public ResponseEntity<?> removeUserById(@RequestHeader("Authorization") String authHeader) throws ApiException {
-        var responseMessage = userService.removeUserById(authHeader);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> removeUserById(@PathVariable String id) throws ApiException {
+        var responseMessage = userService.removeUserById(id);
         return HttpResponseBuilder.buildResponse(responseMessage);
     }
 
@@ -62,21 +62,21 @@ public class UserController {
      * @param request UserCreateRequestDto
      * @return ResponseEntity<UserFullResDto>
      */
-    @PatchMapping("")
-    public ResponseEntity<?> updateUser(@RequestHeader("Authorization") String authHeader, @Valid @RequestBody UserUpdateReqDto request) throws ApiException {
-        var responseMessage = userService.updateUser(authHeader, request);
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable String id, @Valid @RequestBody UserUpdateReqDto request) throws ApiException {
+        var responseMessage = userService.updateUser(id, request);
         return HttpResponseBuilder.buildResponse(responseMessage);
     }
 
     /**
      * Update a user completely
      *
-     * @param authHeader Authorization id
+     * @param id User id
      *
      */
-    @PutMapping("")
-    public ResponseEntity<?> updateUserCompletely(@RequestHeader("Authorization") String authHeader, @Valid @RequestBody UserUpdateReqDto request) throws ApiException {
-        var responseMessage = userService.updateUser(authHeader, request);
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateUserCompletely(@PathVariable String id, @Valid @RequestBody UserUpdateReqDto request) throws ApiException {
+        var responseMessage = userService.updateUser(id, request);
         return HttpResponseBuilder.buildResponse(responseMessage);
     }
 

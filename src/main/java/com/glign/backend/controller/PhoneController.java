@@ -28,10 +28,9 @@ public class PhoneController {
      * @param request PhoneUpdateRequestDto
      * @return ResponseEntity>
      */
-    @PatchMapping("")
-    public ResponseEntity<?> updatePhones(@RequestHeader("Authorization") String authHeader,
-                                          @Valid @RequestBody PhoneUpdateRequestDto request) throws ApiException {
-        var responseMessage = phoneService.updatePhones(authHeader, request);
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> updatePhones(@PathVariable String id, @Valid @RequestBody PhoneUpdateRequestDto request) throws ApiException {
+        var responseMessage = phoneService.updatePhones(id, request);
         return HttpResponseBuilder.buildResponse(responseMessage);
     }
 
@@ -41,10 +40,9 @@ public class PhoneController {
      * @param id User id
      * @return ResponseEntity>
      */
-    @PostMapping("")
-    public ResponseEntity<?> addPhones(@RequestHeader("Authorization") String authHeader,
-                                       @Valid @RequestBody PhoneReqDto request) throws ApiException {
-        var responseMessage = phoneService.addPhones(authHeader, request);
+    @PostMapping("/{id}")
+    public ResponseEntity<?> addPhones(@PathVariable String id, @Valid @RequestBody PhoneReqDto request) throws ApiException {
+        var responseMessage = phoneService.addPhones(id, request);
         return HttpResponseBuilder.buildResponse(responseMessage);
     }
 
@@ -54,10 +52,9 @@ public class PhoneController {
      * @param id User id
      * @return ResponseEntity>
      */
-    @DeleteMapping("")
-    public ResponseEntity<?> deletePhones(@RequestHeader("Authorization") String authHeader,
-                                          @RequestBody NumberReqDto number) throws ApiException {
-        var responseMessage = phoneService.deletePhones(authHeader, number);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletePhones(@PathVariable String id, @RequestBody NumberReqDto number) throws ApiException {
+        var responseMessage = phoneService.deletePhones(id, number);
         return HttpResponseBuilder.buildResponse(responseMessage);
     }
 
@@ -67,9 +64,9 @@ public class PhoneController {
      * @param id User id
      * @return ResponseEntity>
      */
-    @GetMapping("/all")
-    public ResponseEntity<?> getPhones(@RequestHeader("Authorization") String authHeader) throws ApiException {
-        var responseMessage = phoneService.getPhones(authHeader);
+    @GetMapping("/all/{id}")
+    public ResponseEntity<?> getPhones(@PathVariable String id) throws ApiException {
+        var responseMessage = phoneService.getPhones(id);
         return HttpResponseBuilder.buildResponse(responseMessage);
     }
 }
