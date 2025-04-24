@@ -51,7 +51,6 @@ public class SecurityConfig {
                         .requestMatchers("/user/**").authenticated()
                         .requestMatchers("/phone/**").authenticated()
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/h2-console/**").denyAll()
                         .anyRequest().permitAll()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
