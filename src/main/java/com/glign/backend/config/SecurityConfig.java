@@ -34,7 +34,8 @@ public class SecurityConfig {
         if (appProfile.equals("dev")) {
             return http.csrf(AbstractHttpConfigurer::disable)
                     .headers(headers -> headers
-                            .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
+                            .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
+                    )
                     .authorizeHttpRequests(auth -> auth
                             .requestMatchers("/h2-console/**").permitAll()
                             .requestMatchers("/v3/api-docs/**").permitAll()
