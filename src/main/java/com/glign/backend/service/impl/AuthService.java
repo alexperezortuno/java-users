@@ -4,9 +4,9 @@ import com.glign.backend.component.JwtTokenProvider;
 import com.glign.backend.dto.LoginRequestDto;
 import com.glign.backend.dto.TokenDto;
 import com.glign.backend.exception.ApiException;
+import com.glign.backend.jpa.entity.User;
 import com.glign.backend.repository.UserRepository;
 import com.glign.backend.service.IAuthService;
-import com.glign.backend.service.ITokenService;
 import com.glign.backend.util.ResponseCode;
 import com.glign.backend.util.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,9 +64,25 @@ public class AuthService implements IAuthService {
     }
 
     @Override
-    public ResponseMessage<?> register(String name, String email, String password, String confirmPassword) throws ApiException {
-        // Implementación del método de registro
-        return null;
+    public ResponseMessage<?> register(LoginRequestDto request) throws ApiException {
+        try {
+            if (request.getUsername() == null || request.getPassword() == null) {
+                throw new ApiException(ResponseCode.USERNAME_AND_PASS_REQUIRED.getMessage(), HttpStatus.BAD_REQUEST);
+            }
+
+            if (userRepository.existsByEmail(request.getUsername())) {
+                throw new ApiException(ResponseCode.EMAIL_EXIST.getMessage(), HttpStatus.CONFLICT);
+            }
+
+            var user = new User();
+            user.setEmail(request.getUsername());
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+            userRepository.save(user);
+
+            return new ResponseMessage<>(ResponseCode.USER_CREATED);
+        } catch (Exception e) {
+            throw new ApiException(ResponseCode.REGISTRATION_PROBLEM.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override

@@ -6,7 +6,7 @@ import com.glign.backend.util.ResponseMessage;
 
 public interface IAuthService {
     ResponseMessage<?> login(LoginRequestDto request) throws ApiException;
-    ResponseMessage<?> register(String name, String email, String password, String confirmPassword) throws ApiException;
+    ResponseMessage<?> register(LoginRequestDto request) throws ApiException;
     ResponseMessage<?> forgotPassword(String email) throws ApiException;
     ResponseMessage<?> resetPassword(String token, String password, String confirmPassword) throws ApiException;
     ResponseMessage<?> changePassword(String token, String password, String confirmPassword) throws ApiException;
