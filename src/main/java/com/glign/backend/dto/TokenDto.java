@@ -9,4 +9,8 @@ import java.io.Serializable;
 @Setter
 public class TokenDto implements Serializable {
     private String token;
+
+    public TokenDto(String token) {
+        this.token = token;
+    }
 }

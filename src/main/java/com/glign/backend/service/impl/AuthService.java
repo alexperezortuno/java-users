@@ -1,9 +1,12 @@
 package com.glign.backend.service.impl;
 
+import com.glign.backend.component.JwtTokenProvider;
 import com.glign.backend.dto.LoginRequestDto;
+import com.glign.backend.dto.TokenDto;
 import com.glign.backend.exception.ApiException;
 import com.glign.backend.repository.UserRepository;
 import com.glign.backend.service.IAuthService;
+import com.glign.backend.service.ITokenService;
 import com.glign.backend.util.ResponseCode;
 import com.glign.backend.util.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 public class AuthService implements IAuthService {
     private UserRepository userRepository;
     private BCryptPasswordEncoder passwordEncoder;
+    private JwtTokenProvider tokenProvider;
 
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
@@ -24,6 +28,11 @@ public class AuthService implements IAuthService {
     @Autowired
     private void setPasswordEncoder(BCryptPasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
+    }
+
+    @Autowired
+    private void setJwtUtil(JwtTokenProvider tokenProvider) {
+        this.tokenProvider = tokenProvider;
     }
 
     @Override
@@ -46,7 +55,9 @@ public class AuthService implements IAuthService {
                 throw new ApiException(ResponseCode.USERNAME_AND_PASS_REQUIRED.getMessage(), HttpStatus.UNAUTHORIZED);
             }
 
-            var token = tokenProvider.createToken(user.getId().toString(), user.getEmail());
+            var token = tokenProvider.generateToken(user);
+            var response = new TokenDto(token);
+            return new ResponseMessage<>(response, HttpStatus.OK);
         } catch (Exception e) {
             throw new ApiException(ResponseCode.LOGIN_PROBLEM.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
