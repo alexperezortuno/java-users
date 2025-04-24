@@ -5,17 +5,33 @@ app:
   description: ${APP_DESCRIPTION:User API} # Description of the application
   profile: ${APP_PROFILE:dev} # Active profile (dev, test, prod)
 
+log:
+  level:
+  root: ${LOG_LEVEL:INFO} # Default log level
+  com:
+    glign: ${LOG_LEVEL_COM_EXAMPLE:DEBUG} # Log level for specific package
+
 server:
   port: ${SERVER_PORT:8080}
+  http2:
+    enabled: ${SERVER_HTTP2_ENABLED:true} # Enable HTTP/2 support
   servlet:
     context-path: ${SERVER_CONTEXT_PATH:/}
   compression:
     enabled: true
     mime-types: application/json,application/xml,text/html,text/xml,text/plain
     min-response-size: 1024 # Minimum response size in bytes to apply compression
+  jetty:
+    connection-idle-timeout: ${SERVER_JETTY_IDLE_TIMEOUT:10000} # 10 seconds
 
 # Database
 spring:
+  web:
+    cors:
+      allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:8080} # Comma-separated list of allowed origins
+      allowed-methods: ${CORS_ALLOWED_METHODS:GET,POST,PUT,DELETE,OPTIONS} # Comma-separated list of allowed methods
+      allowed-headers: ${CORS_ALLOWED_HEADERS:Content-Type,Authorization} # Comma-separated list of allowed headers
+      allow-credentials: true
   sql:
     init:
       mode: ${DB_INIT_MODE:never} # always, never, embedded
