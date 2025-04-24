@@ -2,8 +2,16 @@
 
 ### Environment variables
 
+#### Use this to run the application
+
 ```shell
 DB_FORMAT_SQL=true;DB_SHOW_SQL=true;DB_DDL_AUTO=create;DB_CREATE_NAMESPACES=true;JWT_SECRET=V6xBhEri2PHaO6g8nrTLHIZ3bu3kvu8tAjcSRVfHzrDpQsEO44QJSOgjS169sNDf;DB_INIT_MODE=always;H2_CONSOLE_ENABLED=true
+```
+
+#### Use this with docker-compose
+
+```shell
+DB_FORMAT_SQL=false;DB_SHOW_SQL=false;DB_INIT_MODE=never;JWT_SECRET=V6xBhEri2PHaO6g8nrTLHIZ3bu3kvu8tAjcSRVfHzrDpQsEO44QJSOgjS169sNDf;DB_PLATFORM=postgres;DB_URL=jdbc:postgresql://localhost:5432/userdb;DB_DRIVER_CLASS_NAME=org.postgresql.Driver;DB_USERNAME=postgres;DB_PASSWORD=postgres;DB_DIALECT=org.hibernate.dialect.PostgreSQLDialect;MEMCACHED_HOST=localhost;MEMCACHED_PORT:11211;APP_PROFILE=prod
 ```
 
 ## Requirements
@@ -26,7 +34,7 @@ docker run -d --name memcached -p 11211:11211 memcached
 make image for java-users
 
 ```shell
-docker image build -t juser:latest .
+docker image build --no-cache -t juser:latest .
 ```
 
 ### Run the application with Docker compose

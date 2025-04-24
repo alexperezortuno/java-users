@@ -55,6 +55,10 @@ public class JwtTokenProvider {
     public boolean validateToken(String token) {
         try {
             token = cleanToken(token);
+            var userId = getUserIdFromToken(token);
+            if (!this.tokenExist(userId)) {
+                return false;
+            }
             Jwts.parserBuilder().setSigningKey(this.key).build().parseClaimsJws(token);
             return true;
         } catch (Exception e) {
@@ -80,9 +84,13 @@ public class JwtTokenProvider {
         return expirationDate.before(new Date());
     }
 
-    public void removeToken(String token) {
+    public boolean tokenExist(String token) {
         token = cleanToken(token);
-        tokenService.removeToken(token);
+        return tokenService.tokenExist(token);
+    }
+
+    public boolean removeToken(String id) {
+        return tokenService.removeToken(id);
     }
 
     private String cleanToken(String token) {

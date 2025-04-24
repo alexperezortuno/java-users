@@ -130,7 +130,9 @@ public class AuthService implements IAuthService {
             if (user == null) {
                 throw new ApiException(ResponseCode.USER_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
             }
-            tokenProvider.removeToken(authHeader);
+            if (!tokenProvider.removeToken(id)) {
+                throw new ApiException(ResponseCode.LOGIN_PROBLEM.getMessage(), HttpStatus.NOT_FOUND);
+            }
             return new ResponseMessage<>(new MessageResponse(ResponseCode.USER_LOGOUT.getMessage()), HttpStatus.OK);
         } catch (ApiException e) {
             throw e;

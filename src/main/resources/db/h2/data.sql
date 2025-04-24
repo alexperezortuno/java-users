@@ -1,6 +1,6 @@
 -- Inserta usuario con ID desde secuencia
 INSERT INTO ac.users (id, uuid, name, email, password, last_login, is_active,
-                   created_date, created_by, last_modified_date, last_modified_by)
+                      created_date, created_by, last_modified_date, last_modified_by)
 VALUES (NEXT VALUE FOR ac.AC_AUTHORITY_SEQ,
              '550e8400-e29b-41d4-a716-446655440000', -- UUID estático de ejemplo
              'Admin',
@@ -15,8 +15,8 @@ VALUES (NEXT VALUE FOR ac.AC_AUTHORITY_SEQ,
 
 -- Inserta teléfono relacionado con el usuario (asumiendo que es el único en la tabla)
 INSERT INTO ac.phones (id, phone_number, city_code, country_code, user_id,
-                    created_date, created_by, last_modified_date, last_modified_by)
-VALUES (NEXT VALUE FOR ac.AC_PHONE_SEQ,
+                       created_date, created_by, last_modified_date, last_modified_by)
+VALUES (NEXT VALUE FOR ac.AC_AUTHORITY_SEQ,
              '1234567',
              '1',
              '56',

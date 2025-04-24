@@ -27,6 +27,7 @@ public class Constant {
     public static final String PHONE_DELETED = "phone deleted";
     public static final String PHONE_EMPTY = "phone empty";
     public static final String LOGIN_PROBLEM = "login problem";
+    public static final String LOGOUT_PROBLEM = "logout problem";
     public static final String USERNAME_AND_PASS_REQUIRED = "username and password required";
     public static final String USERNAME_OR_PASSWORD_NOT_FOUND = "username or password not found";
     public static final String REGISTRATION_PROBLEM = "registration problem";

@@ -26,7 +26,13 @@ public class TokenService implements ITokenService {
     }
 
     @Override
-    public void removeToken(String userId) {
-        memcachedClient.delete(userId);
+    public boolean tokenExist(String userId) {
+        Object token = memcachedClient.get(userId);
+        return token != null;
+    }
+
+    @Override
+    public boolean removeToken(String userId) {
+        return memcachedClient.delete(userId).getStatus().isSuccess();
     }
 }

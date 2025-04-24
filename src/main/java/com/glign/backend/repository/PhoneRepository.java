@@ -12,6 +12,6 @@ import java.util.Optional;
 public interface PhoneRepository extends JpaRepository<Phone, Integer> {
     Optional<Phone> findByUserIdAndNumber(Long userId, String number);
     void deleteById(Long id);
-
     List<Phone> findAllByUser(User user);
+    void deleteByUser(User user);
 }

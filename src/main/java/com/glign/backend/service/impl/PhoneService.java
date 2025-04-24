@@ -37,6 +37,7 @@ public class PhoneService implements IPhoneService {
         this.phoneRepository = phoneRepository;
     }
 
+    @Transactional
     @Override
     public ResponseMessage<?> updatePhones(String id, PhoneUpdateRequestDto request) throws ApiException {
         if (request.getPhones() == null || request.getPhones().isEmpty()) {
@@ -55,9 +56,8 @@ public class PhoneService implements IPhoneService {
                 phoneEntity.setUser(user);
                 phones.add(phoneEntity);
             }
-            user.getPhones().clear();
-            user.getPhones().addAll(phones);
-            userRepository.save(user);
+            phoneRepository.deleteByUser(user);
+            phoneRepository.saveAll(phones);
             return new ResponseMessage<>(new MessageResponse(ResponseCode.PHONE_UPDATED.getMessage()), HttpStatus.OK);
         } catch (ApiException e) {
             throw e;

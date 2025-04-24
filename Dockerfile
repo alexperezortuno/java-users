@@ -26,7 +26,5 @@ RUN chown -R javaUser:javaUser /app
 # Cambiar al usuario no root
 USER javaUser
 
-RUN ls -al
-
 # Set the entry point to run the application
 ENTRYPOINT ["/app/entrypoint.sh"]

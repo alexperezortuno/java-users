@@ -1,23 +1,4 @@
 services:
-  app:
-    image: juser:latest
-    ports:
-      - "8080:8080"
-    environment:
-      - DB_FORMAT_SQL=true
-      - DB_SHOW_SQL=true
-      - JWT_SECRET=V6xBhEri2PHaO6g8nrTLHIZ3bu3kvu8tAjcSRVfHzrDpQsEO44QJSOgjS169sNDf
-      - DB_PLATFORM=postgres
-      - DB_URL=jdbc:postgresql://db:5432/userdb
-      - DB_DRIVER_CLASS_NAME=org.postgresql.Driver
-      - DB_USERNAME=postgres
-      - DB_PASSWORD=postgres
-      - DB_DIALECT=org.hibernate.dialect.PostgreSQLDialect
-    depends_on:
-      - db
-    networks:
-      - backend
-
   db:
     image: postgres:16-alpine
     environment:
@@ -31,8 +12,40 @@ services:
     networks:
       - backend
 
+  memcached:
+    image: memcached:alpine
+    ports:
+      - "11211:11211"
+    networks:
+      - backend
+
+  app:
+    image: juser:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_FORMAT_SQL=false
+      - DB_SHOW_SQL=false
+      - DB_INIT_MODE=always
+      - JWT_SECRET=V6xBhEri2PHaO6g8nrTLHIZ3bu3kvu8tAjcSRVfHzrDpQsEO44QJSOgjS169sNDf
+      - DB_PLATFORM=postgres
+      - DB_URL=jdbc:postgresql://db:5432/userdb
+      - DB_DRIVER_CLASS_NAME=org.postgresql.Driver
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - DB_DIALECT=org.hibernate.dialect.PostgreSQLDialect
+      - MEMCACHED_HOST=memcached
+      - MEMCACHED_PORT:11211
+      - APP_PROFILE=prod
+    depends_on:
+      - db
+      - memcached
+    networks:
+      - backend
+
 volumes:
   postgres_data:
+  postgres_data_tablespace:
 
 networks:
   backend:
