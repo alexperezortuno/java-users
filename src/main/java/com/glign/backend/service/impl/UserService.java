@@ -93,6 +93,8 @@ public class UserService implements IUserService {
             }
             var response = UserMapper.INSTANCE.reduceForGetUser(user);
             return new ResponseMessage<>(response, HttpStatus.OK);
+        } catch (ApiException e) {
+            throw e;
         } catch (Exception e) {
             log.error("Error getting user: {}", e.getMessage());
             throw new ApiException(ResponseCode.INTERNAL_SERVER_ERROR.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -108,6 +110,8 @@ public class UserService implements IUserService {
             }
             userRepository.delete(user);
             return new ResponseMessage<>(new MessageResponse(ResponseCode.USER_DELETED.getMessage()), HttpStatus.OK);
+        } catch (ApiException e) {
+            throw e;
         } catch (Exception e) {
             log.error("error deleting user: {}", e.getMessage());
             throw new ApiException(ResponseCode.INTERNAL_SERVER_ERROR.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -126,6 +130,8 @@ public class UserService implements IUserService {
             userRepository.save(user);
             var response = UserMapper.INSTANCE.reduceEntityToUpdateDto(user);
             return new ResponseMessage<>(response, HttpStatus.OK);
+        } catch (ApiException e) {
+            throw e;
         } catch (Exception e) {
             log.error("Error updating user: {}", e.getMessage());
             throw new ApiException(ResponseCode.INTERNAL_SERVER_ERROR.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -141,6 +147,8 @@ public class UserService implements IUserService {
             }
             var response = UserMapper.INSTANCE.toUserGetResDtoList(users);
             return new ResponseMessage<>(response, HttpStatus.OK);
+        } catch (ApiException e) {
+            throw e;
         } catch (Exception e) {
             log.error("Error users: {}", e.getMessage());
             throw new ApiException(ResponseCode.INTERNAL_SERVER_ERROR.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

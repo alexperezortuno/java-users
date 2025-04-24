@@ -37,24 +37,24 @@ public class AuthService implements IAuthService {
 
     @Override
     public ResponseMessage<?> login(LoginRequestDto request) throws ApiException {
+        if (request.getUsername() == null || request.getPassword() == null) {
+            throw new ApiException(ResponseCode.USERNAME_AND_PASS_REQUIRED.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
+        if (!userRepository.existsByEmail(request.getUsername())) {
+            throw new ApiException(ResponseCode.USERNAME_OR_PASSWORD_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+        }
+
+        var user = userRepository.findByEmail(request.getUsername());
+        if (user == null) {
+            throw new ApiException(ResponseCode.USERNAME_OR_PASSWORD_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+        }
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new ApiException(ResponseCode.USERNAME_AND_PASS_REQUIRED.getMessage(), HttpStatus.UNAUTHORIZED);
+        }
+
         try {
-            if (request.getUsername() == null || request.getPassword() == null) {
-                throw new ApiException(ResponseCode.USERNAME_AND_PASS_REQUIRED.getMessage(), HttpStatus.BAD_REQUEST);
-            }
-
-            if (!userRepository.existsByEmail(request.getUsername())) {
-                throw new ApiException(ResponseCode.USERNAME_OR_PASSWORD_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
-            }
-
-            var user = userRepository.findByEmail(request.getUsername());
-            if (user == null) {
-                throw new ApiException(ResponseCode.USERNAME_OR_PASSWORD_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
-            }
-
-            if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-                throw new ApiException(ResponseCode.USERNAME_AND_PASS_REQUIRED.getMessage(), HttpStatus.UNAUTHORIZED);
-            }
-
             var token = tokenProvider.generateToken(user);
             var response = new TokenDto(token);
             return new ResponseMessage<>(response, HttpStatus.OK);
@@ -65,15 +65,15 @@ public class AuthService implements IAuthService {
 
     @Override
     public ResponseMessage<?> register(LoginRequestDto request) throws ApiException {
+        if (request.getUsername() == null || request.getPassword() == null) {
+            throw new ApiException(ResponseCode.USERNAME_AND_PASS_REQUIRED.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
+        if (userRepository.existsByEmail(request.getUsername())) {
+            throw new ApiException(ResponseCode.EMAIL_EXIST.getMessage(), HttpStatus.CONFLICT);
+        }
+
         try {
-            if (request.getUsername() == null || request.getPassword() == null) {
-                throw new ApiException(ResponseCode.USERNAME_AND_PASS_REQUIRED.getMessage(), HttpStatus.BAD_REQUEST);
-            }
-
-            if (userRepository.existsByEmail(request.getUsername())) {
-                throw new ApiException(ResponseCode.EMAIL_EXIST.getMessage(), HttpStatus.CONFLICT);
-            }
-
             var user = new User();
             user.setEmail(request.getUsername());
             user.setPassword(passwordEncoder.encode(request.getPassword()));

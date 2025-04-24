@@ -39,11 +39,11 @@ public class PhoneService implements IPhoneService {
 
     @Override
     public ResponseMessage<?> updatePhones(String id, PhoneUpdateRequestDto request) throws ApiException {
-        try {
-            if (request.getPhones() == null || request.getPhones().isEmpty()) {
-                throw new ApiException(ResponseCode.PHONE_REQUIRED.getMessage(), HttpStatus.BAD_REQUEST);
-            }
+        if (request.getPhones() == null || request.getPhones().isEmpty()) {
+            throw new ApiException(ResponseCode.PHONE_REQUIRED.getMessage(), HttpStatus.BAD_REQUEST);
+        }
 
+        try {
             var user = userRepository.findByUuid(UUID.fromString(id));
             if (user == null) {
                 throw new ApiException(ResponseCode.USER_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
@@ -59,6 +59,8 @@ public class PhoneService implements IPhoneService {
             user.getPhones().addAll(phones);
             userRepository.save(user);
             return new ResponseMessage<>(new MessageResponse(ResponseCode.PHONE_UPDATED.getMessage()), HttpStatus.OK);
+        } catch (ApiException e) {
+            throw e;
         } catch (Exception e) {
             log.error("Error updating phones: {}", e.getMessage());
             throw new ApiException(ResponseCode.INTERNAL_SERVER_ERROR.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -67,19 +69,19 @@ public class PhoneService implements IPhoneService {
 
     @Override
     public ResponseMessage<?> addPhones(String id, PhoneReqDto request) throws ApiException {
+        if (request.getNumber().isEmpty()) {
+            throw new ApiException(ResponseCode.PHONE_REQUIRED.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
+        if (request.getCityCode().isEmpty()) {
+            throw new ApiException(ResponseCode.PHONE_REQUIRED.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
+        if (request.getCountryCode().isEmpty()) {
+            throw new ApiException(ResponseCode.PHONE_REQUIRED.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
         try {
-            if (request.getNumber().isEmpty()) {
-                throw new ApiException(ResponseCode.PHONE_REQUIRED.getMessage(), HttpStatus.BAD_REQUEST);
-            }
-
-            if (request.getCityCode().isEmpty()) {
-                throw new ApiException(ResponseCode.PHONE_REQUIRED.getMessage(), HttpStatus.BAD_REQUEST);
-            }
-
-            if (request.getCountryCode().isEmpty()) {
-                throw new ApiException(ResponseCode.PHONE_REQUIRED.getMessage(), HttpStatus.BAD_REQUEST);
-            }
-
             var user = userRepository.findByUuid(UUID.fromString(id));
             if (user == null) {
                 throw new ApiException(ResponseCode.USER_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
@@ -89,6 +91,8 @@ public class PhoneService implements IPhoneService {
             phones.setUser(user);
             phoneRepository.save(phones);
             return new ResponseMessage<>(new MessageResponse(ResponseCode.PHONE_ADDED.getMessage()), HttpStatus.OK);
+        } catch (ApiException e) {
+            throw e;
         } catch (Exception e) {
             log.error("Error adding phones: {}", e.getMessage());
             throw new ApiException(ResponseCode.INTERNAL_SERVER_ERROR.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -98,16 +102,16 @@ public class PhoneService implements IPhoneService {
     @Override
     @Transactional
     public ResponseMessage<?> deletePhones(String id, NumberReqDto request) throws ApiException {
+        if (request.getNumber().isEmpty()) {
+            throw new ApiException(ResponseCode.NUMBER_REQUIRED.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
+        var user = userRepository.findByUuid(UUID.fromString(id));
+        if (user == null) {
+            throw new ApiException(ResponseCode.USER_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+        }
+
         try {
-            if (request.getNumber().isEmpty()) {
-                throw new ApiException(ResponseCode.NUMBER_REQUIRED.getMessage(), HttpStatus.BAD_REQUEST);
-            }
-
-            var user = userRepository.findByUuid(UUID.fromString(id));
-            if (user == null) {
-                throw new ApiException(ResponseCode.USER_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
-            }
-
             var phone = phoneRepository.findByUserIdAndNumber(user.getId(), request.getNumber());
             if (phone.isEmpty()) {
                 throw new ApiException(ResponseCode.PHONE_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
@@ -115,6 +119,8 @@ public class PhoneService implements IPhoneService {
 
             phoneRepository.deleteById(phone.orElseThrow().getId());
             return new ResponseMessage<>(new MessageResponse(ResponseCode.PHONE_DELETED.getMessage()), HttpStatus.OK);
+        } catch (ApiException e) {
+            throw e;
         } catch (Exception e) {
             log.error("Error deleting phones: {}", e.getMessage());
             throw new ApiException(ResponseCode.INTERNAL_SERVER_ERROR.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -135,6 +141,8 @@ public class PhoneService implements IPhoneService {
             }
             var response = PhoneMapper.INSTANCE.entityToDto(allPhones);
             return new ResponseMessage<>(response, HttpStatus.OK);
+        } catch (ApiException e) {
+            throw e;
         } catch (Exception e) {
             log.error("Error getting phones: {}", e.getMessage());
             throw new ApiException(ResponseCode.INTERNAL_SERVER_ERROR.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
