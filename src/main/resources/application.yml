@@ -28,7 +28,7 @@ management:
   endpoints:
     web:
       cors:
-        allowed-origins: ${SERVER_CORS_ORIGINS:*}
+        allowed-origins: ${SERVER_CORS_ORIGINS:http://localhost:8080}
         allowed-methods: ${SERVER_METHODS:OPTIONS,GET,POST,DELETE,PATCH,PUT}
         allowed-headers: ${SERVER_HEADERS:Authorization,Content-Type}
         exposed-headers: ${SERVER_EXPOSED_HEADERS:Authorization}
