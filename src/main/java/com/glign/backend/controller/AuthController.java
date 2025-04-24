@@ -1,6 +1,7 @@
 package com.glign.backend.controller;
 
 import com.glign.backend.dto.LoginRequestDto;
+import com.glign.backend.dto.RegisterRequestDto;
 import com.glign.backend.exception.ApiException;
 import com.glign.backend.service.IAuthService;
 import com.glign.backend.util.HttpResponseBuilder;
@@ -36,7 +37,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody LoginRequestDto request) throws ApiException {
+    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequestDto request) throws ApiException {
         var responseMessage = authService.register(request);
         return HttpResponseBuilder.buildResponse(responseMessage);
     }

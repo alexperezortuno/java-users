@@ -2,6 +2,7 @@ package com.glign.backend.service.impl;
 
 import com.glign.backend.component.JwtTokenProvider;
 import com.glign.backend.dto.LoginRequestDto;
+import com.glign.backend.dto.RegisterRequestDto;
 import com.glign.backend.dto.TokenDto;
 import com.glign.backend.exception.ApiException;
 import com.glign.backend.jpa.entity.User;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 public class AuthService implements IAuthService {
@@ -64,7 +67,11 @@ public class AuthService implements IAuthService {
     }
 
     @Override
-    public ResponseMessage<?> register(LoginRequestDto request) throws ApiException {
+    public ResponseMessage<?> register(RegisterRequestDto request) throws ApiException {
+        if (request.getName() == null) {
+            throw new ApiException(ResponseCode.NAME_IS_REQUIRED.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
         if (request.getUsername() == null || request.getPassword() == null) {
             throw new ApiException(ResponseCode.USERNAME_AND_PASS_REQUIRED.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -75,6 +82,8 @@ public class AuthService implements IAuthService {
 
         try {
             var user = new User();
+            user.setName(request.getUsername());
+            user.setUuid(UUID.randomUUID());
             user.setEmail(request.getUsername());
             user.setPassword(passwordEncoder.encode(request.getPassword()));
             user.setActive(false);

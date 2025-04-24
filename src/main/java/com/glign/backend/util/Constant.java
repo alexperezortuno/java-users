@@ -29,4 +29,6 @@ public class Constant {
     public static final String USERNAME_AND_PASS_REQUIRED = "username and password required";
     public static final String USERNAME_OR_PASSWORD_NOT_FOUND = "username or password not found";
     public static final String REGISTRATION_PROBLEM = "registration problem";
+    public static final String USERNAME_IS_REQUIRED = "username is required";
+    public static final String NAME_IS_REQUIRED = "name is required";
 }
