@@ -1,6 +1,5 @@
 package com.glign.backend.service.impl;
 
-import com.glign.backend.component.JwtTokenProvider;
 import com.glign.backend.dto.NumberReqDto;
 import com.glign.backend.dto.PhoneReqDto;
 import com.glign.backend.dto.PhoneUpdateRequestDto;
@@ -27,7 +26,6 @@ import java.util.UUID;
 public class PhoneService implements IPhoneService {
     private PhoneRepository phoneRepository;
     private UserRepository userRepository;
-    private JwtTokenProvider tokenProvider;
 
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
@@ -39,18 +37,11 @@ public class PhoneService implements IPhoneService {
         this.phoneRepository = phoneRepository;
     }
 
-    @Autowired
-    public void setTokenProvider(JwtTokenProvider tokenProvider) {
-        this.tokenProvider = tokenProvider;
-    }
-
     @Override
-    public ResponseMessage<?> updatePhones(String authHeader, PhoneUpdateRequestDto request) throws ApiException {
+    public ResponseMessage<?> updatePhones(String id, PhoneUpdateRequestDto request) throws ApiException {
         if (request.getPhones() == null || request.getPhones().isEmpty()) {
             throw new ApiException(ResponseCode.PHONE_REQUIRED.getMessage(), HttpStatus.BAD_REQUEST);
         }
-
-        var id = this.getId(authHeader);
 
         try {
             var user = userRepository.findByUuid(UUID.fromString(id));
@@ -77,9 +68,7 @@ public class PhoneService implements IPhoneService {
     }
 
     @Override
-    public ResponseMessage<?> addPhones(String authHeader, PhoneReqDto request) throws ApiException {
-        var id = this.getId(authHeader);
-
+    public ResponseMessage<?> addPhones(String id, PhoneReqDto request) throws ApiException {
         if (request.getNumber().isEmpty()) {
             throw new ApiException(ResponseCode.PHONE_REQUIRED.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -112,9 +101,7 @@ public class PhoneService implements IPhoneService {
 
     @Override
     @Transactional
-    public ResponseMessage<?> deletePhones(String authHeader, NumberReqDto request) throws ApiException {
-        var id = this.getId(authHeader);
-
+    public ResponseMessage<?> deletePhones(String id, NumberReqDto request) throws ApiException {
         if (request.getNumber().isEmpty()) {
             throw new ApiException(ResponseCode.NUMBER_REQUIRED.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -141,9 +128,7 @@ public class PhoneService implements IPhoneService {
     }
 
     @Override
-    public ResponseMessage<?> getPhones(String authHeader) throws ApiException {
-        var id = this.getId(authHeader);
-
+    public ResponseMessage<?> getPhones(String id) throws ApiException {
         try {
             var user = userRepository.findByUuid(UUID.fromString(id));
             if (user == null) {
@@ -161,14 +146,6 @@ public class PhoneService implements IPhoneService {
         } catch (Exception e) {
             log.error("Error getting phones: {}", e.getMessage());
             throw new ApiException(ResponseCode.INTERNAL_SERVER_ERROR.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    private String getId(String authHeader) throws ApiException {
-        try {
-            return tokenProvider.getUserIdFromToken(authHeader);
-        } catch (Exception e) {
-            throw new ApiException(ResponseCode.LOGIN_PROBLEM.getMessage(), HttpStatus.UNAUTHORIZED);
         }
     }
 }

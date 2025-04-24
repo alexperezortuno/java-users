@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface IUserService {
     ResponseMessage<UserFullResDto> createUser(UserCreateRequestDto userCreateRequestDto) throws ApiException;
-    ResponseMessage<UserFullResDto> getUserById(String authHeader) throws ApiException;
-    ResponseMessage<MessageResponse> removeUserById(String authHeader) throws ApiException;
-    ResponseMessage<UserUpdateResDto> updateUser(String authHeader, UserUpdateReqDto userCreateRequestDto) throws ApiException;
-    ResponseMessage<List<UserGetResDto>> getAll(String authHeader) throws ApiException;
+    ResponseMessage<UserFullResDto> getUserById(String id) throws ApiException;
+    ResponseMessage<MessageResponse> removeUserById(String id) throws ApiException;
+    ResponseMessage<UserUpdateResDto> updateUser(String id, UserUpdateReqDto userCreateRequestDto) throws ApiException;
+    ResponseMessage<List<UserGetResDto>> getAll(String id) throws ApiException;
 }
