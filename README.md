@@ -308,3 +308,51 @@ java-users/
 ├── pom.xml                      # Maven configuration
 └── README.md                    # This file
 ```
+
+```mermaid
+    sequenceDiagram
+    box Start App
+    participant Start
+    end
+    box Purple endpoints
+    participant Auth
+    participant User
+    participant Phone
+    end
+    participant Security
+    box database
+    participant database
+    participant memcached
+    end
+    Start->>Auth: Register User with pass
+    activate Auth
+    Auth->>database: Save new user
+    Auth->>Start: Success Register
+    deactivate Auth
+    Start->>Auth: Login with pass
+    activate Auth
+    Auth->>Security: 
+    Security-->>memcached: Generate and save token
+    activate memcached
+    memcached-->>Security: token generated
+    Security->>Auth: 
+    deactivate memcached
+    Auth->>Start: Token returned
+    deactivate Auth
+    Start->>User: [USER] CRUD with token returned from login
+    User-->>Security: verify token
+    activate Security
+    Security-->>User: token verified
+    deactivate Security
+    activate User
+    User->>Start: [USER] CRUD response
+    deactivate User
+    Start->>Phone: [PHONE] CRUD with token returned from login
+    activate Phone
+    Phone-->>Security: verify token
+    activate Security
+    Security-->>Phone: token verified
+    Phone->>Start: [PHONE] CRUD responses
+    deactivate Security 
+    deactivate Phone
+```
