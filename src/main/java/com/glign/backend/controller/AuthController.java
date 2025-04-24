@@ -8,10 +8,7 @@ import com.glign.backend.util.HttpResponseBuilder;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -38,6 +35,30 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequestDto request) throws ApiException {
         var responseMessage = authService.register(request);
+        return HttpResponseBuilder.buildResponse(responseMessage);
+    }
+
+    /**
+     * Logout a user
+     *
+     * @param authHeader UserLogoutRequestDto
+     * @return ResponseEntity<UserFullResDto>
+     */
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@RequestHeader("Authorization") String authHeader) throws ApiException {
+        var responseMessage = authService.logout(authHeader);
+        return HttpResponseBuilder.buildResponse(responseMessage);
+    }
+
+    /**
+     * Refresh token
+     *
+     * @param authHeader UserLogoutRequestDto
+     * @return ResponseEntity<UserFullResDto>
+     */
+    @PostMapping("/refresh-token")
+    public ResponseEntity<?> refreshToken(@RequestHeader("Authorization") String authHeader) throws ApiException {
+        var responseMessage = authService.refreshToken(authHeader);
         return HttpResponseBuilder.buildResponse(responseMessage);
     }
 }
