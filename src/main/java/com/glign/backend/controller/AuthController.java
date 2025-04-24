@@ -34,4 +34,10 @@ public class AuthController {
         var responseMessage = authService.login(request);
         return HttpResponseBuilder.buildResponse(responseMessage);
     }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@Valid @RequestBody LoginRequestDto request) throws ApiException {
+        var responseMessage = authService.register(request);
+        return HttpResponseBuilder.buildResponse(responseMessage);
+    }
 }
