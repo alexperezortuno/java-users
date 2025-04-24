@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 public enum ResponseCode {
     USER_DELETED(HttpStatus.OK.value(), Constant.USER_DELETED),
     USER_CREATED(HttpStatus.CREATED.value(), Constant.USER_CREATED),
+    USER_LOGOUT(HttpStatus.OK.value(), Constant.USER_LOGOUT),
     EMAIL_REQUIRED(HttpStatus.BAD_REQUEST.value(), Constant.EMAIL_REQUIRED),
     EMAIL_EXIST(HttpStatus.CONFLICT.value(), Constant.EMAIL_ALREADY_EXIST),
     PASSWORD_REQUIRED(HttpStatus.BAD_REQUEST.value(), Constant.PASSWORD_REQUIRED),

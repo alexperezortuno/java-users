@@ -79,4 +79,8 @@ public class JwtTokenProvider {
         Date expirationDate = getExpirationDateFromToken(token);
         return expirationDate.before(new Date());
     }
+
+    public void removeToken(String token) {
+        tokenService.removeToken(token);
+    }
 }

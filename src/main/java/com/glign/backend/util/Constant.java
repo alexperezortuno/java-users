@@ -14,6 +14,7 @@ public class Constant {
     public static final String USER_DELETED = "user deleted";
     public static final String USER_UPDATED = "user updated";
     public static final String USER_CREATED = "user created";
+    public static final String USER_LOGOUT = "user logout";
     public static final String PASSWORD_REQUIRED = "password required";
     public static final String INTERNAL_SERVER_ERROR = "internal server error";
     public static final String AUTHENTICATION_FAILED = "authentication failed";

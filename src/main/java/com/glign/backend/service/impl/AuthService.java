@@ -119,14 +119,24 @@ public class AuthService implements IAuthService {
         } catch (Exception e) {
             throw new ApiException(ResponseCode.REGISTRATION_PROBLEM.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        var token = tokenProvider.generateToken(id);
-        return null;
     }
 
     @Override
     public ResponseMessage<?> logout(String authHeader) throws ApiException {
-        // Implementación del método de cierre de sesión
-        return null;
+        var id = this.getUserIdFromToken(authHeader);
+
+        try {
+            var user = userRepository.findByUuid(UUID.fromString(id));
+            if (user == null) {
+                throw new ApiException(ResponseCode.USER_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+            }
+            tokenProvider.removeToken(authHeader);
+            return new ResponseMessage<>(new MessageResponse(ResponseCode.USER_LOGOUT.getMessage()), HttpStatus.OK);
+        } catch (ApiException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new ApiException(ResponseCode.INTERNAL_SERVER_ERROR.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override
