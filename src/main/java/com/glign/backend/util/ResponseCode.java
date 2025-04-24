@@ -8,7 +8,7 @@ public enum ResponseCode {
     USER_DELETED(HttpStatus.OK.value(), Constant.USER_DELETED),
     USER_CREATED(HttpStatus.CREATED.value(), Constant.USER_CREATED),
     EMAIL_REQUIRED(HttpStatus.BAD_REQUEST.value(), Constant.EMAIL_REQUIRED),
-    EMAIL_EXIST(HttpStatus.BAD_REQUEST.value(), Constant.EMAIL_ALREADY_EXIST),
+    EMAIL_EXIST(HttpStatus.CONFLICT.value(), Constant.EMAIL_ALREADY_EXIST),
     PASSWORD_REQUIRED(HttpStatus.BAD_REQUEST.value(), Constant.PASSWORD_REQUIRED),
     INVALID_PASSWORD(HttpStatus.BAD_REQUEST.value(), Constant.INVALID_PASSWORD),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR.value(), Constant.INTERNAL_SERVER_ERROR),
