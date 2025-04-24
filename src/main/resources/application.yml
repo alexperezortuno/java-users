@@ -24,6 +24,17 @@ server:
   jetty:
     connection-idle-timeout: ${SERVER_JETTY_IDLE_TIMEOUT:10000} # 10 seconds
 
+management:
+  endpoints:
+    web:
+      cors:
+        allowed-origins: ${SERVER_CORS_ORIGINS:*}
+        allowed-methods: ${SERVER_METHODS:OPTIONS,GET,POST,DELETE,PATCH,PUT}
+        allowed-headers: ${SERVER_HEADERS:Authorization,Content-Type}
+        exposed-headers: ${SERVER_EXPOSED_HEADERS:Authorization}
+        allow-credentials: true
+        max-age: 3600
+
 spring:
   sql:
     init:
