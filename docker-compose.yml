@@ -27,15 +27,15 @@ services:
       - DB_FORMAT_SQL=false
       - DB_SHOW_SQL=false
       - DB_INIT_MODE=always
-      - JWT_SECRET=V6xBhEri2PHaO6g8nrTLHIZ3bu3kvu8tAjcSRVfHzrDpQsEO44QJSOgjS169sNDf
-      - DB_PLATFORM=postgres
+      - JWT_SECRET=${JWT_SECRET:-secret}
+      - DB_PLATFORM=${DB_PLATFORM:-postgres}
       - DB_URL=jdbc:postgresql://db:5432/userdb
       - DB_DRIVER_CLASS_NAME=org.postgresql.Driver
-      - DB_USERNAME=postgres
-      - DB_PASSWORD=postgres
+      - DB_USERNAME=${DB_USERNAME:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-postgres}
       - DB_DIALECT=org.hibernate.dialect.PostgreSQLDialect
-      - MEMCACHED_HOST=memcached
-      - MEMCACHED_PORT:11211
+      - MEMCACHED_HOST=${MEMCACHED_HOST:-memcached}
+      - MEMCACHED_PORT:${MEMCACHED_PORT:-11211}
       - APP_PROFILE=prod
     depends_on:
       - db
