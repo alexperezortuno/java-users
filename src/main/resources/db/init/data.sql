@@ -1,5 +1,5 @@
 -- Inserta usuario con ID desde secuencia
-INSERT INTO ac.users (id, uuid, name, email, password, last_login, token, is_active,
+INSERT INTO ac.users (id, uuid, name, email, password, last_login, is_active,
                    created_date, created_by, last_modified_date, last_modified_by)
 VALUES (NEXT VALUE FOR ac.AC_AUTHORITY_SEQ,
              '550e8400-e29b-41d4-a716-446655440000', -- UUID estático de ejemplo
@@ -7,7 +7,6 @@ VALUES (NEXT VALUE FOR ac.AC_AUTHORITY_SEQ,
              'admin@admin.com',
              'superPassword',
              CURRENT_TIMESTAMP,
-             'JWT_TOKEN_DE_PRUEBA',
              TRUE,
              CURRENT_TIMESTAMP,
              'admin',

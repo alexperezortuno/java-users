@@ -71,11 +71,11 @@ public class UserService implements IUserService {
             user.getPhones().forEach(phone -> phone.setUser(user));
 
             String token = tokenProvider.generateToken(user);
-            user.setToken(token);
             user.setPassword(passwordEncoder.encode(userCreateRequestDto.getPassword()));
 
             User savedUser = userRepository.save(user);
             var response = UserMapper.INSTANCE.reduceForCreateUderDto(savedUser);
+            response.setToken(token);
             return new ResponseMessage<>(response, HttpStatus.CREATED);
         } catch (Exception e) {
             log.error("Error creating user: {}", e.getMessage());

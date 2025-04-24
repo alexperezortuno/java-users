@@ -39,9 +39,6 @@ public class User extends BaseEntity<User> {
     @Column(name = "last_login")
     private Date lastLogin;
 
-    @Column(name = "token")
-    private String token;
-
     @Column(name = "is_active")
     private boolean isActive;
 }

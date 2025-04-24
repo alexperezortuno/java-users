@@ -1,10 +1,12 @@
 package com.glign.backend.component;
 
 import com.glign.backend.jpa.entity.User;
+import com.glign.backend.service.ITokenService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -15,13 +17,19 @@ import java.util.Date;
 
 @Component
 public class JwtTokenProvider {
+    private Key key;
+    private ITokenService tokenService;
+
     @Value("${jwt.secret}")
     private String jwtSecret;
 
     @Value("${jwt.expiration}")
     private int jwtExpirationInMs;
 
-    private Key key;
+    @Autowired
+    public void setTokenService(ITokenService tokenService) {
+        this.tokenService = tokenService;
+    }
 
     @PostConstruct
     public void init() {
@@ -32,12 +40,16 @@ public class JwtTokenProvider {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
 
-        return Jwts.builder()
+        var response = Jwts.builder()
                 .setSubject(user.getUuid().toString())
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(this.key, SignatureAlgorithm.HS384)
                 .compact();
+
+        int seconds = Math.toIntExact((expiryDate.getTime() - now.getTime()) / 1000);
+        tokenService.storeToken(user.getUuid().toString(), response, seconds);
+        return response;
     }
 
     public boolean validateToken(String token) {
