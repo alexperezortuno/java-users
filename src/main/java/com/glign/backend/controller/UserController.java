@@ -79,4 +79,15 @@ public class UserController {
         var responseMessage = userService.updateUser(id, request);
         return HttpResponseBuilder.buildResponse(responseMessage);
     }
+
+    /**
+     * Get all users
+     *
+     * @return ResponseEntity<UserFullResDto>
+     */
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllUsers() throws ApiException {
+        var responseMessage = userService.getAll();
+        return HttpResponseBuilder.buildResponse(responseMessage);
+    }
 }

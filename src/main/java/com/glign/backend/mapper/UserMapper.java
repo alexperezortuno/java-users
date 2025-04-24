@@ -38,4 +38,6 @@ public interface UserMapper {
     @Mapping(target = "id", source = "uuid")
     @Mapping(target = "lastModified", source = "lastModifiedDate")
     UserUpdateResDto reduceEntityToUpdateDto(User user);
+
+    List<UserGetResDto> toUserGetResDtoList(List<User> users);
 }

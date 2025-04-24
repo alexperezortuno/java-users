@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -127,6 +128,21 @@ public class UserService implements IUserService {
             return new ResponseMessage<>(response, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error updating user: {}", e.getMessage());
+            throw new ApiException(ResponseCode.INTERNAL_SERVER_ERROR.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseMessage<List<UserGetResDto>> getAll() throws ApiException {
+        try {
+            var users = userRepository.findAll();
+            if (users.isEmpty()) {
+                throw new ApiException(ResponseCode.USER_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+            }
+            var response = UserMapper.INSTANCE.toUserGetResDtoList(users);
+            return new ResponseMessage<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("Error users: {}", e.getMessage());
             throw new ApiException(ResponseCode.INTERNAL_SERVER_ERROR.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
