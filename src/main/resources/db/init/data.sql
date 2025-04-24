@@ -5,7 +5,7 @@ VALUES (NEXT VALUE FOR ac.AC_AUTHORITY_SEQ,
              '550e8400-e29b-41d4-a716-446655440000', -- UUID estático de ejemplo
              'Admin',
              'admin@admin.com',
-             'superPassword',
+             '$2a$10$Em1xf.HPS6hSK0QtgqWsGORxXXaqkS9DwUpCS.1iuB119pofM1Vd2', --superPassword
              CURRENT_TIMESTAMP,
              TRUE,
              CURRENT_TIMESTAMP,

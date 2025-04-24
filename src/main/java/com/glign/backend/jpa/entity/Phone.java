@@ -13,6 +13,7 @@ import lombok.Setter;
                 @Index(name = "idx_user_id", columnList = "user_id"),
                 @Index(name = "idx_user_id_phone_number", columnList = "user_id, phone_number")
         }
+        , schema = "ac"
 )
 public class Phone extends BaseEntity<Phone> {
     @Id

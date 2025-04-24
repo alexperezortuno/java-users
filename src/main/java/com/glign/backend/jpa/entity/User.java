@@ -11,7 +11,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@Table(name = "users")
+@Table(name = "users", schema = "ac")
 public class User extends BaseEntity<User> {
     @Id
     @SequenceGenerator(name = "AC_AUTHORITY_SEQ", sequenceName = "ac.AC_AUTHORITY_SEQ", allocationSize = 1)

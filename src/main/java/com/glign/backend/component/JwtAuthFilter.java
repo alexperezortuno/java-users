@@ -8,6 +8,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,9 @@ import java.util.UUID;
 public class JwtAuthFilter extends OncePerRequestFilter {
     private JwtTokenProvider tokenProvider;
     private UserRepository userRepository;
+
+    @Value("${app.profile}")
+    private String appProfile;
 
     @Autowired
     private void setJwtUtil(JwtTokenProvider tokenProvider) {
@@ -37,6 +41,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
             String authHeader = request.getHeader("Authorization");
+            if (appProfile.equals("dev")) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
                 // Extraer el token del encabezado y validar el token
                 String token = authHeader.replace("Bearer ", "");
