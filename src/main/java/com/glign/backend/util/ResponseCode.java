@@ -15,6 +15,7 @@ public enum ResponseCode {
     AUTHENTICATION_FAILED(HttpStatus.PRECONDITION_FAILED.value(), Constant.AUTHENTICATION_FAILED),
     INVALID_TOKEN(HttpStatus.BAD_REQUEST.value(), Constant.INVALID_TOKEN),
     USER_NOT_FOUND(HttpStatus.NO_CONTENT.value(), Constant.USER_NOT_FOUND),
+    USER_NOT_ACTIVE(HttpStatus.PRECONDITION_FAILED.value(), Constant.USER_NOT_ACTIVE),
     PHONE_REQUIRED(HttpStatus.BAD_REQUEST.value(), Constant.PHONE_REQUIRED),
     PHONE_UPDATED(HttpStatus.OK.value(), Constant.PHONE_UPDATED),
     PHONE_ADDED(HttpStatus.OK.value(), Constant.PHONE_ADDED),

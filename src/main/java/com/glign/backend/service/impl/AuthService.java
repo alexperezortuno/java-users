@@ -98,6 +98,38 @@ public class AuthService implements IAuthService {
     }
 
     @Override
+    public ResponseMessage<?> refreshToken(String authHeader) throws ApiException {
+        var id = this.getUserIdFromToken(authHeader);
+
+        try {
+            var user = userRepository.findByUuid(UUID.fromString(id));
+            if (user == null) {
+                throw new ApiException(ResponseCode.USER_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+            }
+
+            if (!user.isActive()) {
+                throw new ApiException(ResponseCode.USER_NOT_ACTIVE.getMessage(), HttpStatus.UNAUTHORIZED);
+            }
+
+            var token = tokenProvider.generateToken(user);
+            var response = new TokenDto(token);
+            return new ResponseMessage<>(response, HttpStatus.OK);
+        } catch (ApiException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new ApiException(ResponseCode.REGISTRATION_PROBLEM.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        var token = tokenProvider.generateToken(id);
+        return null;
+    }
+
+    @Override
+    public ResponseMessage<?> logout(String authHeader) throws ApiException {
+        // Implementación del método de cierre de sesión
+        return null;
+    }
+
+    @Override
     public ResponseMessage<?> forgotPassword(String email) throws ApiException {
         // Implementación del método de recuperación de contraseña
         return null;
@@ -125,5 +157,13 @@ public class AuthService implements IAuthService {
     public ResponseMessage<?> resendVerificationEmail(String email) throws ApiException {
         // Implementación del método para reenviar el correo electrónico de verificación
         return null;
+    }
+
+    private String getUserIdFromToken(String token) throws ApiException {
+        try {
+            return tokenProvider.getUserIdFromToken(token);
+        } catch (Exception e) {
+            throw new ApiException(ResponseCode.INVALID_TOKEN.getMessage(), HttpStatus.UNAUTHORIZED);
+        }
     }
 }

@@ -31,4 +31,5 @@ public class Constant {
     public static final String REGISTRATION_PROBLEM = "registration problem";
     public static final String USERNAME_IS_REQUIRED = "username is required";
     public static final String NAME_IS_REQUIRED = "name is required";
+    public static final String USER_NOT_ACTIVE = "user not active";
 }
