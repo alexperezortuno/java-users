@@ -27,7 +27,7 @@ public class UserController {
      * @return ResponseEntity<UserFullResDto>
      */
     @PostMapping("")
-    public ResponseEntity<?> getUser(@Valid @RequestBody UserCreateRequestDto request) throws ApiException {
+    public ResponseEntity<?> createUser(@Valid @RequestBody UserCreateRequestDto request) throws ApiException {
         var responseMessage = userService.createUser(request);
         return HttpResponseBuilder.buildResponse(responseMessage);
     }
