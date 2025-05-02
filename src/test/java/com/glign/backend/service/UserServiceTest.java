@@ -14,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.List;
@@ -36,11 +37,15 @@ class UserServiceTest {
     @Mock
     private JwtTokenProvider tokenProvider;
 
+    @Mock
+    private BCryptPasswordEncoder passwordEncoder;
+
     @BeforeEach
     void init() {
         // Configura expresiones regulares como si vinieran del application.yml
         ReflectionTestUtils.setField(userService, "emailRegex", ".+@.+\\..+");
         ReflectionTestUtils.setField(userService, "passwordRegex", "^(?=.*[0-9]).{6,}$");
+        ReflectionTestUtils.setField(userService, "passwordEncoder", passwordEncoder);
     }
 
     @Test
@@ -53,6 +58,8 @@ class UserServiceTest {
 
         when(userRepository.existsByEmail(anyString())).thenReturn(false);
         when(tokenProvider.generateToken(any(User.class))).thenReturn("mock-token");
+        when(passwordEncoder.encode(anyString())).thenReturn("encoded-password");
+        when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         var response = userService.createUser(request);
 

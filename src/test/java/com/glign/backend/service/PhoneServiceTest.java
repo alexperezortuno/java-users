@@ -49,7 +49,7 @@ class PhoneServiceTest {
         user.setPhones(new ArrayList<>());
 
         when(userRepository.findByUuid(uuid)).thenReturn(user);
-        when(userRepository.save(any())).thenReturn(user);
+        //when(userRepository.save(any())).thenReturn(user);
 
         var response = phoneService.updatePhones(uuid.toString(), request);
 
@@ -68,8 +68,8 @@ class PhoneServiceTest {
         ApiException ex = assertThrows(ApiException.class, () ->
                 phoneService.updatePhones(uuid.toString(), request));
 
-        assertEquals(ResponseCode.INTERNAL_SERVER_ERROR.getMessage(), ex.getMessage());
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, ex.getResponse().getStatusCode());
+        assertEquals(ResponseCode.USER_NOT_FOUND.getMessage(), ex.getMessage());
+        assertEquals(HttpStatus.NOT_FOUND, ex.getResponse().getStatusCode());
     }
 
     @Test
@@ -80,7 +80,7 @@ class PhoneServiceTest {
         ApiException ex = assertThrows(ApiException.class, () ->
                 phoneService.updatePhones(uuid.toString(), request));
 
-        assertEquals(ResponseCode.INTERNAL_SERVER_ERROR.getMessage(), ex.getMessage());
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, ex.getResponse().getStatusCode());
+        assertEquals(ResponseCode.PHONE_REQUIRED.getMessage(), ex.getMessage());
+        assertEquals(HttpStatus.BAD_REQUEST, ex.getResponse().getStatusCode());
     }
 }
