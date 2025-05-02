@@ -1,0 +1,63 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  IMAGE_NAME: "ghcr.io/alexperezortuno/java-users"
+  VERSION: "latest"
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Paso 1: Checkout del código
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Paso 2: Configura Java y Maven
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      # Paso 3: Construye el JAR (y lo guarda como artifact)
+      - name: Build JAR with Maven
+        run: mvn clean package -DskipTests
+
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: java-users-app
+          path: target/*.jar
+
+      # Paso 4: Construye y publica la imagen Docker
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ env.IMAGE_NAME }}:${{ env.VERSION }}
+          labels: |
+            org.opencontainers.image.source=${{ github.repository_url }}
+
+      # Paso 5 (Opcional): Despliegue en OpenShift
+      - name: Deploy to OpenShift
+        if: github.ref == 'refs/heads/main'  # Solo en pushes a main
+        run: |
+          echo "${{ secrets.OCP_KUBECONFIG }}" > kubeconfig.yaml
+          export KUBECONFIG=kubeconfig.yaml
+          oc patch deployment/java-users --patch '{"spec":{"template":{"spec":{"containers":[{"name":"java-users","image":"${{ env.IMAGE_NAME }}:${{ env.VERSION }}"}]}}}}'
