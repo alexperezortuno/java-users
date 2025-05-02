@@ -49,7 +49,6 @@ class PhoneServiceTest {
         user.setPhones(new ArrayList<>());
 
         when(userRepository.findByUuid(uuid)).thenReturn(user);
-        //when(userRepository.save(any())).thenReturn(user);
 
         var response = phoneService.updatePhones(uuid.toString(), request);
 
